@@ -1,7 +1,13 @@
-body {
-  background-color: #492201;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: serif;
 }
-
+body {
+  color: #492201;
+  background-repeat;no-repeat:
+  }
 nav {
   position: sticky;
   top: 0;
