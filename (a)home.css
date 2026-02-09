@@ -1,0 +1,21 @@
+body {
+  background-color: #492201;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(99,50,0);
+  padding: 16px 0;
+  text-align: center;
+
+nav a {
+  text-decoration: none;
+  margin: 0 14px;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: all .35 ease;
+}
+  
