@@ -6,8 +6,9 @@
 }
 body {
   color: #492201;
-  background-repeat;no-repeat:
+  background-repeat: no-repeat;
   }
+
 nav {
   position: sticky;
   top: 0;
@@ -24,4 +25,19 @@ nav a {
   font-weight: bold;
   transition: all .35 ease;
 }
+
+a:link {
+  color: white;
+}
+
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: white;
+}
+
+a:active {
+  color: red;
   
