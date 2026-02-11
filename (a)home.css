@@ -5,7 +5,7 @@
   font-family: serif;
 }
 body {
-  color: #492201;
+  color: white;
   background-repeat: no-repeat;
   }
 
@@ -16,7 +16,10 @@ nav {
   background: rgba(99,50,0);
   padding: 16px 0;
   text-align: center;
-
+   width: 100%;
+   backdrop-filter: blur(0);
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+}
 a {
   text-decoration: none;
   margin: 0 14px;
@@ -36,6 +39,7 @@ a:visited {
 
 a:hover {
   color: white;
+  background-color:  #492201;
 }
 
 a:active {
