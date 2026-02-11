@@ -44,4 +44,30 @@ a:hover {
 
 a:active {
   color: red;
+}
+
+img {
+    display: block;
+   border-radius: 50%;
+  float: left;
+}
+
+h1 {
+  color: black;
+  text-align: center;
+}
+
+div {
+ height: 100px;
+  width: 300px;
+  background-color: white;
+  text-align: center;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid black;
+
+}
+
   
