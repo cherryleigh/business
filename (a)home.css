@@ -5,11 +5,7 @@
   font-family: serif;
 }
 body {
-  background-image: https://i.pinimg.com/736x/e1/2c/b5/e12cb5bf6722cc47bfcf54562f777160.jpg;
-  background-repeat: no-repeat;
-   height: 100%; 
-  background-size: cover;
-   background-position: center;
+  background-color: #b56c2f;
   }
 
 nav {
