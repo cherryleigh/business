@@ -46,12 +46,6 @@ a:active {
   color: red;
 }
 
-img {
-    display: block;
-   border-radius: 50%;
-  float: left;
-}
-
 h1, p {
   color: black;
   text-align: center;
@@ -70,4 +64,9 @@ div {
 
 }
 
+img {
+  display: block;
+float: left;
+   border-radius: 50%;
+}
   
