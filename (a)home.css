@@ -6,6 +6,10 @@
 }
 body {
   background-color: #5e320d;
+    line-height:1.9;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
   }
 
 nav {
