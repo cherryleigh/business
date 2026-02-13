@@ -15,8 +15,8 @@ nav {
   background: rgba(255, 255, 255);
   padding: 16px 0;
   text-align: center;
-   width: 1200px;
-  height: 300px;
+   width: 1500px;
+  height: 100px;
    backdrop-filter: blur(0);
     transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
 }
@@ -27,7 +27,7 @@ a {
   border-radius: 30px;
   font-weight: bold;
   transition: all .35 ease;
-  float: left;
+  float: right;
 }
 
 a:link {
