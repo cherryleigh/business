@@ -10,7 +10,6 @@ body {
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
-  filter: blur(2px);
   }
 
 nav {
@@ -72,6 +71,10 @@ img {
   display: block;
 float: left;
    border-radius: 50%;
+}
+
+img-background {
+   filter: blur(2px);
 }
 
 h2, h3 {
