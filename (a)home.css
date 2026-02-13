@@ -35,11 +35,11 @@ a {
 }
 
 a:link {
-  color: black;
+  color: white;
 }
 
 a:visited {
-  color: black;
+  color: white;
 }
 
 a:hover {
@@ -52,8 +52,8 @@ a:active {
   color: red;
 }
 
-h1 {
-  color: black;
+h1, p {
+  color: white;
   text-align: left;
 }
 
