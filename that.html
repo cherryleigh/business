@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Reviewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .section-box {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2980b9;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 5px;
+        }
+        .topic {
+            margin-bottom: 20px;
+        }
+        .topic h3 {
+            color: #16a085;
+            margin-bottom: 5px;
+        }
+        .qa-item {
+            margin-bottom: 15px;
+        }
+        .question {
+            font-weight: bold;
+            color: #c0392b;
+        }
+        .answer {
+            margin-left: 15px;
+        }
+        ul {
+            margin-top: 5px;
+        }
+        code, pre {
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Comprehensive Mathematics Reviewer</h1>
+
+    <!-- GROUP 1: TEXT REVIEWER -->
+    <div class="section-box">
+        <h2>Group 1: Text Reviewer</h2>
+
+        <div class="topic">
+            <h3>1. Applying the Law of Cosines in Solving Oblique Triangles</h3>
+            <p>An oblique triangle is a triangle without a 90° angle. It can be an <strong>acute triangle</strong> (all angles < 90°) or an <strong>obtuse triangle</strong> (one angle > 90°).</p>
+            <p><strong>Formulas:</strong></p>
+            <ul>
+                <li>a² = b² + c² − 2bc cos A</li>
+                <li>b² = a² + c² − 2ac cos B</li>
+                <li>c² = a² + b² − 2ab cos C</li>
+            </ul>
+            <p><em>Rule:</em> Uppercase and lowercase letters represent opposite angles and sides (A ↔ a, B ↔ b, C ↔ c).</p>
+            <p><strong>When to Use:</strong></p>
+            <ul>
+                <li><strong>SAS (Side-Angle-Side):</strong> Known two sides and the included angle (find missing side).</li>
+                <li><strong>SSS (Side-Side-Side):</strong> Known all three sides (find missing angle).</li>
+            </ul>
+        </div>
+
+        <div class="topic">
+            <h3>2. Solving Quadratic Inequalities in One Variable</h3>
+            <p>A quadratic inequality in one variable contains a variable raised to the second power (e.g., x² + 3x − 4 > 0). Symbols used are >, <, ≥, and ≤.</p>
+            <p><strong>Interval Notation:</strong></p>
+            <ul>
+                <li><strong>Parentheses ( ):</strong> Endpoints are NOT included (used for < or >). Example: x > 3 → (3, ∞)</li>
+                <li><strong>Brackets [ ]:</strong> Endpoints ARE included (used for ≤ or ≥). Example: x ≥ 3 → [3, ∞)</li>
+            </ul>
+        </div>
+
+        <div class="topic">
+            <h3>3. Solving Quadratic Inequalities in Two Variables</h3>
+            <p>Standard forms: y > ax² + bx + c, y ≥ ax² + bx + c, y < ax² + bx + c, y ≤ ax² + bx + c (a ≠ 0). The solution is an infinite set of ordered pairs (x, y) shown as a shaded region on the Cartesian plane.</p>
+            <p><strong>4-Step Procedure:</strong></p>
+            <ol>
+                <li><strong>Find Features:</strong> Orientation (a > 0 opens up, a < 0 opens down), Vertex h = -b/(2a), x-intercepts (y=0), and y-intercept (0, c).</li>
+                <li><strong>Draw Boundary:</strong> Dashed line for strict (<, >); Solid line for non-strict (≤, ≥).</li>
+                <li><strong>Test Point:</strong> Substitute a point like (0,0) into the inequality to check if it's true or false.</li>
+                <li><strong>Shade Region:</strong> Shade the region containing the test point if true; shade the opposite if false. (y > or y ≥ shade above/inside; y < or y ≤ shade below/outside for upward parabolas).</li>
+            </ol>
+        </div>
+
+        <div class="topic">
+            <h3>4. Determining the Region of Solutions (Linear vs. Quadratic)</h3>
+            <p>Evaluates boundary types (solid vs. dashed), half-plane/curve regions (above/below/inside/outside), and overlapping regions for systems of inequalities.</p>
+        </div>
+
+        <div class="topic">
+            <h3>5. Absolute Value Equations in One Variable</h3>
+            <p>Absolute value represents distance from 0. Rule: |x| = a → x = a OR x = -a. (e.g., |x| = 5 → x = 5 or -5).</p>
+        </div>
+
+        <div class="topic">
+            <h3>6. Absolute Value Inequalities in One Variable</h3>
+            <ul>
+                <li><strong>Less Than (|x| < a):</strong> -a < x < a (Between / AND). Example: |x| < 5 → (-5, 5)</li>
+                <li><strong>Greater Than (|x| > a):</strong> x < -a OR x > a (Outside / OR). Example: |x| > 5 → (-∞, -5) ∪ (5, ∞)</li>
+            </ul>
+        </div>
+
+        <div class="topic">
+            <h3>7. Measures of Position</h3>
+            <ul>
+                <li><strong>Quartiles (Q):</strong> Divide data into 4 equal parts (Q1=25%, Q2=50%/Median, Q3=75%). Formula: Position = k(n + 1)/4</li>
+                <li><strong>Deciles (D):</strong> Divide data into 10 equal parts (D1 to D9, D5=Median). Formula: Position = k(n + 1)/10</li>
+                <li><strong>Percentiles (P):</strong> Divide data into 100 equal parts (P1 to P99). Formula: Position = k(n + 1)/100</li>
+                <li><strong>Interpolation:</strong> For decimal positions: [(Larger - Smaller) × decimal] + Smaller</li>
+                <li><strong>Interquartile Range (IQR):</strong> IQR = Q3 - Q1</li>
+                <li><strong>Outliers Rule:</strong> Lower fence = Q1 - 1.5(IQR); Upper fence = Q3 + 1.5(IQR). Any value beyond fences is an outlier.</li>
+            </ul>
+        </div>
+
+        <div class="topic">
+            <h3>8. Box-and-Whisker Plots & Cumulative Frequency</h3>
+            <ul>
+                <li><strong>Box-and-Whisker 5-Number Summary:</strong> Minimum, Q1, Median (Q2), Q3, Maximum.</li>
+                <li><strong>Cumulative Frequency:</strong> Running total of frequencies where the last value equals total frequency (n).</li>
+                <li><strong>Histogram & Polygon (Ogive):</strong> Graph showing running totals against class boundaries.</li>
+            </ul>
+        </div>
+
+        <div class="topic">
+            <h3>9 & 10. Percentile Rank and Drawing Conclusions</h3>
+            <p>Formula for position: Pk = k(n + 1) / 100. Percentiles measure relative position, not raw percentage scores. Being in the 80th percentile means scoring higher than or equal to ~80% of the comparison group.</p>
+        </div>
+    </div>
+
+    <!-- GROUP 2: QUESTIONS AND ANSWERS -->
+    <div class="section-box">
+        <h2>Group 2: Questions and Answers</h2>
+
+        <div class="qa-item">
+            <div class="question">Q1: What is an oblique triangle?</div>
+            <div class="answer">A1: An oblique triangle is any triangle that does not contain a 90° right angle. It can be acute or obtuse.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q2: What are the three forms of the Law of Cosines?</div>
+            <div class="answer">A2: <br>a² = b² + c² − 2bc cos A<br>b² = a² + c² − 2ac cos B<br>c² = a² + b² − 2ab cos C</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q3: When should you use the Law of Cosines?</div>
+            <div class="answer">A3: You use it when you are given Side-Angle-Side (SAS) to find a missing side, or Side-Side-Side (SSS) to find a missing angle.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q4: What is the difference between parentheses ( ) and brackets [ ] in interval notation?</div>
+            <div class="answer">A4: Parentheses mean the endpoint is NOT included (used with < or >). Brackets mean the endpoint IS included (used with ≤ or ≥).</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q5: How do you know whether to draw a solid or dashed curve when graphing quadratic inequalities?</div>
+            <div class="answer">A5: Use a dashed curve for strict inequalities (< or >) and a solid curve for non-strict inequalities (≤ or ≥).</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q6: What is the rule for solving absolute value equations like |x| = a?</div>
+            <div class="answer">A6: Set up two separate equations: x = a OR x = -a.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q7: How do absolute value inequalities differ between "less than" and "greater than"?</div>
+            <div class="answer">A7: Less than (|x| < a) becomes a compound statement -a < x < a (between). Greater than (|x| > a) breaks into two statements x < -a OR x > a (outside).</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q8: How are quartiles, deciles, and percentiles related regarding the median?</div>
+            <div class="answer">A8: The median is equal to Q2, D5, and P50.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q9: How do you calculate outliers using the 1.5 × IQR rule?</div>
+            <div class="answer">A9: First find IQR (Q3 - Q1). Values below (Q1 - 1.5 × IQR) or above (Q3 + 1.5 × IQR) are outliers.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question">Q10: Does scoring at the 80th percentile mean you scored 80% on a test?</div>
+            <div class="answer">A10: No. It means your score was equal to or higher than 80% of the people who took the test.</div>
+        </div>
+    </div>
+
+    <!-- GROUP 3: REAL LIFE EXAMPLES -->
+    <div class="section-box">
+        <h2>Group 3: Real-Life Examples</h2>
+
+        <div class="topic">
+            <h3>1. Applying Law of Cosines</h3>
+            <p><strong>Real-Life Scenario:</strong> Navigation and Surveying. A ship sails from a port 10 miles due East, then turns 45° and sails another 15 miles. To find the direct distance from the port back to the ship without a right triangle, navigators use the Law of Cosines (SAS setup).</p>
+        </div>
+
+        <div class="topic">
+            <h3>2. Solving Quadratic Inequalities in One Variable</h3>
+            <p><strong>Real-Life Scenario:</strong> Business Profit Margins. A business determines that its daily profit P relative to product price x follows a quadratic curve. They solve P(x) ≥ 0 to find the price range where the company turns a profit rather than operating at a loss.</p>
+        </div>
+
+        <div class="topic">
+            <h3>3 & 4. Quadratic Inequalities in Two Variables & Solution Regions</h3>
+            <p><strong>Real-Life Scenario:</strong> Civil Engineering & Safe Zones. Determining the safe structural boundary of a suspension bridge cable curve. Engineers shade the region under the parabolic cable path (y ≤ ax² + bx + c) to specify where support beams can safely be placed.</p>
+        </div>
+
+        <div class="topic">
+            <h3>5 & 6. Absolute Value Equations and Inequalities</h3>
+            <p><strong>Real-Life Scenario:</strong> Quality Control & Manufacturing Tolerances. A machine fills bag chips targeting 100 grams, but allows an error margin of 5 grams. This is written as |x - 100| ≤ 5. Acceptable bags range between 95g and 105g; anything outside this interval is rejected.</p>
+        </div>
+
+        <div class="topic">
+            <h3>7. Measures of Position (Quartiles, Deciles, Percentiles)</h3>
+            <p><strong>Real-Life Scenario:</strong> Pediatric Growth Charts. Doctors measure a toddler's height and weight and report that they are in the 75th percentile (P75). This informs parents that their child is taller than 75% of kids their age.</p>
+        </div>
+
+        <div class="topic">
+            <h3>8. Box-and-Whisker Plots & Cumulative Frequency</h3>
+            <p><strong>Real-Life Scenario:</strong> Real Estate Analysis. Real estate agents use box plots to summarize housing prices in a neighborhood, showing buyers the minimum price, maximum price, and the middle 50% (IQR) of home values without getting distorted by extreme outliers.</p>
+        </div>
+
+        <div class="topic">
+            <h3>9 & 10. Percentile Rank and Statistical Conclusions</h3>
+            <p><strong>Real-Life Scenario:</strong> Standardized Testing (e.g., SAT / College Entrance Exams). A student receives a percentile rank of 90 on a national entrance exam. The university concludes that this applicant performed better than 90% of all national test-takers, qualifying them for admission.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
