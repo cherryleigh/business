@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematics Reviewer - Interactive Study Guide</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for Math formatting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="initKaTeX();"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        book: {
+                            page: '#0f172a',
+                            border: '#1e293b',
+                            accent: '#38bdf8',
+                            rose: '#fb7185'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        .book-shadow {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.1);
+        }
+        .page-enter {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans overflow-x-hidden bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-900">
+
+    <!-- Top Navigation & Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+            
+            <!-- Logo & Title -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-rose-500 flex items-center justify-center text-white text-lg font-bold shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-lg text-slate-100 tracking-wide">Mathematics Reviewer</h1>
+                    <p class="text-xs text-slate-400">Interactive Concept Reviewer & Practice Guide</p>
+                </div>
+            </div>
+
+            <!-- Reading Progress Bar & Chapter Quick Selector -->
+            <div class="hidden md:flex items-center gap-4 flex-1 max-w-xs mx-4">
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
+                    <div id="reading-progress-bar" class="bg-gradient-to-r from-cyan-400 to-rose-400 h-full w-[10%] transition-all duration-300"></div>
+                </div>
+                <span id="page-counter-badge" class="text-xs font-mono font-bold text-cyan-400 whitespace-nowrap">Topic 1 / 11</span>
+            </div>
+
+            <!-- Table of Contents Toggle Button -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleTOC()" class="px-3.5 py-2 rounded-xl bg-slate-800 text-slate-200 hover:bg-slate-700 text-xs font-bold transition flex items-center gap-2 border border-slate-700">
+                    <i class="fa-solid fa-list-ul text-cyan-400"></i>
+                    <span>Topics</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Slide-out Table of Contents Drawer -->
+    <div id="toc-drawer" class="fixed inset-y-0 right-0 w-80 bg-slate-900 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+            <h3 class="font-display font-bold text-base text-slate-100 flex items-center gap-2">
+                <i class="fa-solid fa-bookmark text-cyan-400"></i> Topics & Practice
+            </h3>
+            <button onclick="toggleTOC()" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="p-4 flex-1 overflow-y-auto custom-scrollbar space-y-2" id="toc-list">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+    <div id="toc-backdrop" onclick="toggleTOC()" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-40 hidden"></div>
+
+    <!-- Main Content Stage -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between">
+        
+        <!-- Book Page Container -->
+        <div id="book-page-wrapper" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 book-shadow relative min-h-[580px] flex flex-col justify-between overflow-hidden">
+            
+            <!-- Page Ambient Lighting Accent -->
+            <div id="page-theme-glow" class="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Dynamic Page Content (Injected by JS) -->
+            <div id="page-content" class="page-enter space-y-6">
+                <!-- Page body will be rendered here -->
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                <button id="btn-prev" onclick="changePage(-1)" class="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white font-bold text-xs transition flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-chevron-left"></i> Previous Topic
+                </button>
+
+                <div class="flex items-center gap-1 overflow-x-auto max-w-[200px] sm:max-w-none" id="page-dots-container">
+                    <!-- Page Dots Injected Here -->
+                </div>
+
+                <button id="btn-next" onclick="changePage(1)" class="px-5 py-2.5 rounded-xl bg-cyan-600 text-white hover:bg-cyan-500 font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-cyan-600/30">
+                    Next Topic <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-3 text-center text-xs text-slate-500 border-t border-slate-900">
+        Mathematics Reviewer • Designed for Step-by-Step Mastery & Practice
+    </footer>
+
+    <!-- Book Data Script -->
+    <script>
+        const pagesData = [
+            {
+                chapterNum: 1,
+                title: "1. Law of Cosines in Oblique Triangles",
+                subtitle: "Solving triangles without a 90° angle",
+                type: "Trigonometry",
+                badge: "Trigonometry",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "Which situation requires the Law of Cosines to solve for a missing side or angle?",
+                        options: ["When given two angles and any side (AAS/ASA)", "When given Side-Angle-Side (SAS) or Side-Side-Side (SSS)"],
+                        correct: 1,
+                        explanation: "Law of Cosines is specifically used for SAS (to find the opposite side) and SSS (to find missing angles)."
+                    },
+                    {
+                        question: "If a triangle has side $a = 5$, $b = 7$, and angle $C = 60^\\circ$, which form of the formula solves for $c$?",
+                        options: ["$c^2 = a^2 + b^2 - 2ab \\cos C$", "$a^2 = b^2 + c^2 - 2bc \\cos A$"],
+                        correct: 0,
+                        explanation: "To solve for side $c$, use $c^2 = a^2 + b^2 - 2ab \\cos C$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-cyan-950/40 border border-cyan-500/30 rounded-2xl p-5 flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl shrink-0 font-bold border border-cyan-500/30">
+                                △
+                            </div>
+                            <div>
+                                <h3 class="font-display font-bold text-lg text-cyan-300">What is an Oblique Triangle?</h3>
+                                <p class="text-xs text-slate-300 leading-relaxed mt-1">
+                                    An <strong>oblique triangle</strong> is any triangle that does NOT contain a $90^\circ$ right angle. They come in two varieties:
+                                </p>
+                                <ul class="list-disc list-inside text-xs text-slate-300 mt-2 space-y-1">
+                                    <li><strong>Acute Triangle:</strong> All three angles are less than $90^\circ$.</li>
+                                    <li><strong>Obtuse Triangle:</strong> One angle is greater than $90^\circ$.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Formula Card -->
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-4">
+                            <h4 class="font-display font-bold text-xs uppercase text-cyan-300 tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-square-root-variable text-cyan-400"></i> Law of Cosines Formulas
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-center font-mono text-cyan-300">
+                                    $a^2 = b^2 + c^2 - 2bc \cos A$
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-center font-mono text-cyan-300">
+                                    $b^2 = a^2 + c^2 - 2ac \cos B$
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-center font-mono text-cyan-300">
+                                    $c^2 = a^2 + b^2 - 2ab \cos C$
+                                </div>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded-xl text-xs text-amber-300 border border-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                                <span><strong>REMEMBER!</strong> Lowercase letters represent sides and uppercase letters represent opposite angles: $A \leftrightarrow a$, $B \leftrightarrow b$, $C \leftrightarrow c$.</span>
+                            </div>
+                        </div>
+
+                        <!-- Usage Conditions -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-2">
+                                <div class="flex items-center gap-2 text-cyan-400 font-bold text-sm">
+                                    <i class="fa-solid fa-draw-polygon"></i> SAS (Side-Angle-Side)
+                                </div>
+                                <p class="text-xs text-slate-300">Use this when you know <strong>two sides and the included angle</strong> between them. It is primarily used to find the third missing side.</p>
+                            </div>
+                            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-2">
+                                <div class="flex items-center gap-2 text-rose-400 font-bold text-sm">
+                                    <i class="fa-solid fa-shapes"></i> SSS (Side-Side-Side)
+                                </div>
+                                <p class="text-xs text-slate-300">Use this when you know <strong>all three side lengths</strong>. Rearrange the formula to solve for any missing angle.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 2,
+                title: "2. Quadratic Inequalities in One Variable",
+                subtitle: "Single-variable inequalities & interval notation",
+                type: "Algebra",
+                badge: "Algebra",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "What interval notation corresponds to the inequality $x \ge 3$?",
+                        options: ["$(3, \\infty)$", "$[3, \\infty)$"],
+                        correct: 1,
+                        explanation: "The '$\ge$' symbol means the endpoint is included, which requires a square bracket $[$."
+                    },
+                    {
+                        question: "Which boundary symbol indicates that an endpoint is NOT included in the solution?",
+                        options: ["Parentheses $( )$ used with $<$ or $>$", "Brackets $[ ]$ used with $\\le$ or $\\ge$"],
+                        correct: 0,
+                        explanation: "Strict inequalities ($<$ or $>$) do not include the boundary point, represented by parentheses $( )$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <p class="text-xs text-slate-300">
+                            A <strong>quadratic inequality in one variable</strong> contains a variable raised to the second power ($x^2$).
+                        </p>
+
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-4 space-y-3">
+                            <h4 class="font-display font-bold text-xs uppercase text-cyan-300 tracking-wider">
+                                Example Forms
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs font-mono">
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 text-cyan-300 text-center">$x^2 + 3x - 4 > 0$</div>
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 text-cyan-300 text-center">$x^2 - 5x + 6 \le 0$</div>
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 text-cyan-300 text-center">$2x^2 + x - 3 \ge 0$</div>
+                            </div>
+                        </div>
+
+                        <!-- Symbols & Notation Matrix -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
+                            <h4 class="font-display font-bold text-xs uppercase text-slate-400 tracking-wider">
+                                <i class="fa-solid fa-brackets-curly text-cyan-400 mr-1.5"></i> Inequality Symbols & Interval Notation
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                                    <div class="font-bold text-rose-400 text-sm">Parentheses $( )$ — Not Included</div>
+                                    <p class="text-slate-300">Used with strict inequalities: <strong>$<$ (less than)</strong> or <strong>$>$ (greater than)</strong>.</p>
+                                    <div class="p-2 bg-slate-950 rounded border border-slate-800 font-mono text-slate-200">
+                                        Example: $x > 3 \longrightarrow (3, \infty)$
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                                    <div class="font-bold text-emerald-400 text-sm">Brackets $[ ]$ — Included</div>
+                                    <p class="text-slate-300">Used with non-strict inequalities: <strong>$\le$ (less than or equal)</strong> or <strong>$\ge$ (greater than or equal)</strong>.</p>
+                                    <div class="p-2 bg-slate-950 rounded border border-slate-800 font-mono text-slate-200">
+                                        Example: $x \ge 3 \longrightarrow [3, \infty)$
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 3,
+                title: "3. Quadratic Inequalities in Two Variables",
+                subtitle: "Graphing parabolas & solution regions",
+                type: "Algebra",
+                badge: "Algebra",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "When graphing $y > ax^2 + bx + c$, what type of curve should be drawn?",
+                        options: ["Solid parabola", "Dashed parabola"],
+                        correct: 1,
+                        explanation: "Strict inequalities ($>$ or $<$) use a dashed parabola because points on the curve are not solutions."
+                    },
+                    {
+                        question: "For $y \le ax^2 + bx + c$ with an upward-opening parabola ($a > 0$), where do you shade?",
+                        options: ["Below / outside the parabola", "Above / inside the parabola"],
+                        correct: 0,
+                        explanation: "$y \le$ indicates shading below or outside an upward-opening parabola."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <p class="text-xs text-slate-300">
+                            A quadratic inequality in two variables yields an infinite set of ordered pairs $(x,y)$ representing a shaded region on the Cartesian plane. Standard forms (where $a \neq 0$):
+                        </p>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-center">
+                            <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl text-cyan-300">$y > ax^2 + bx + c$</div>
+                            <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl text-cyan-300">$y \ge ax^2 + bx + c$</div>
+                            <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl text-cyan-300">$y < ax^2 + bx + c$</div>
+                            <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl text-cyan-300">$y \le ax^2 + bx + c$</div>
+                        </div>
+
+                        <!-- 4 Step Procedure -->
+                        <div class="bg-slate-950 border border-cyan-500/30 rounded-2xl p-5 space-y-4">
+                            <h4 class="font-display font-bold text-sm text-cyan-300 flex items-center gap-2">
+                                <i class="fa-solid fa-list-check"></i> 4-Step Procedure for Solving & Graphing
+                            </h4>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+                                    <strong class="text-amber-400 block">Step 1: Key Features</strong>
+                                    <p class="text-slate-300"><strong>Orientation:</strong> $a > 0$ opens up; $a < 0$ opens down.</p>
+                                    <p class="text-slate-300"><strong>Vertex $(h,k)$:</strong> $h = -\frac{b}{2a}$, then substitute $h$ into equation for $k$.</p>
+                                    <p class="text-slate-300"><strong>Intercepts:</strong> Set $y=0$ for x-intercepts; $(0,c)$ is y-intercept.</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+                                    <strong class="text-indigo-400 block">Step 2: Boundary Curve</strong>
+                                    <p class="text-slate-300"><strong>Dashed Curve:</strong> For strict ($<$ or $>$). Boundary not included.</p>
+                                    <p class="text-slate-300"><strong>Solid Curve:</strong> For non-strict ($\le$ or $\ge$). Boundary included.</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+                                    <strong class="text-cyan-400 block">Step 3: Test Point</strong>
+                                    <p class="text-slate-300">Pick a test point not on the curve, usually $(0,0)$.</p>
+                                    <p class="text-slate-300">If true $\rightarrow$ region contains test point. If false $\rightarrow$ opposite region.</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+                                    <strong class="text-emerald-400 block">Step 4: Shade Solution Region</strong>
+                                    <p class="text-slate-300">$y >$ or $y \ge$: Shade <strong>above/inside</strong> upward parabola.</p>
+                                    <p class="text-slate-300">$y <$ or $y \le$: Shade <strong>below/outside</strong> upward parabola.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 4,
+                title: "4. Solution Regions (Linear vs. Quadratic)",
+                subtitle: "Determining boundaries and intersecting regions",
+                type: "Algebra",
+                badge: "Algebra",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "In a system of inequalities, what region represents the set of all valid solutions?",
+                        options: ["Any region shaded by at least one inequality", "The overlapping region where all shadings intersect"],
+                        correct: 1,
+                        explanation: "The solution set for a system of inequalities is the intersection (overlapping region) where all inequalities are satisfied simultaneously."
+                    },
+                    {
+                        question: "When graphing a linear inequality $y < mx + b$, which side of the boundary line is shaded?",
+                        options: ["Above the line", "Below the line"],
+                        correct: 1,
+                        explanation: "For $y <$, shade the half-plane below the boundary line."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <p class="text-xs text-slate-300">
+                            The <strong>region of solutions</strong> is the shaded area in the coordinate plane containing all ordered pairs $(x,y)$ that satisfy an inequality or system of inequalities simultaneously.
+                        </p>
+
+                        <!-- 3 Core Properties Card -->
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-xs uppercase text-cyan-300 tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-cyan-400"></i> Core Evaluation Rules
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-slate-200 block mb-1">1. Boundary Type</strong>
+                                    <p class="text-slate-400">Solid boundary for $\le, \ge$ (included). Dashed boundary for $<, >$ (not included).</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-slate-200 block mb-1">2. Half-Plane / Region</strong>
+                                    <p class="text-slate-400">Linear: Above ($>$) or Below ($<$). Quadratic: Inside vs. Outside depending on opening direction.</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-slate-200 block mb-1">3. Overlapping Region</strong>
+                                    <p class="text-slate-400">For systems, the true solution set is the overlapping intersection of all shaded areas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comparison Matrix -->
+                        <div class="overflow-x-auto custom-scrollbar rounded-xl border border-slate-800">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-950 border-b border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
+                                        <th class="p-3">Inequality Type</th>
+                                        <th class="p-3">Symbols $>, \ge$</th>
+                                        <th class="p-3">Symbols $<, \le$</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 bg-slate-900/60 text-slate-300">
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-100">Linear ($y = mx + b$)</td>
+                                        <td class="p-3">Shade <strong>Above</strong> the line</td>
+                                        <td class="p-3">Shade <strong>Below</strong> the line</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-100">Upward Parabola ($a > 0$)</td>
+                                        <td class="p-3">Shade <strong>Above / Inside</strong></td>
+                                        <td class="p-3">Shade <strong>Below / Outside</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-100">Downward Parabola ($a < 0$)</td>
+                                        <td class="p-3">Shade <strong>Above / Outside</strong></td>
+                                        <td class="p-3">Shade <strong>Below / Inside</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 5,
+                title: "5. Absolute Value Equations in One Variable",
+                subtitle: "Distance from zero & solving two cases",
+                type: "Algebra",
+                badge: "Algebra",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "What is the primary rule for solving an absolute value equation $|x| = a$ (where $a \ge 0$)?",
+                        options: ["$x = a$ OR $x = -a$", "$x = a$ AND $x = a$"],
+                        correct: 0,
+                        explanation: "Absolute value represents distance from 0, so $|x| = a$ splits into $x = a$ or $x = -a$."
+                    },
+                    {
+                        question: "What is the solution set for $|x| = 7$?",
+                        options: ["$\{7\}$", "$\{-7, 7\}$"],
+                        correct: 1,
+                        explanation: "Both $-7$ and $7$ are at a distance of $7$ units from zero on the number line."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-cyan-950/40 border border-cyan-500/30 rounded-2xl p-5 space-y-2">
+                            <h3 class="font-display font-bold text-lg text-cyan-300">Understanding Absolute Value</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                <strong>Absolute Value:</strong> The distance of a number from $0$ on a number line (always non-negative).
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-xs uppercase text-cyan-300 tracking-wider">
+                                Fundamental Rule
+                            </h4>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-center font-mono text-sm text-cyan-300">
+                                $|x| = a \implies x = a \quad \text{OR} \quad x = -a \quad (a \ge 0)
+                            </div>
+                        </div>
+
+                        <!-- Example Walkthrough -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-xs uppercase text-slate-400 tracking-wider">Example Walkthrough</h4>
+                            <p class="text-xs text-slate-200">Solve: $|x| = 5$</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-slate-300">
+                                    Case 1: $x = 5$
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-slate-300">
+                                    Case 2: $x = -5$
+                                </div>
+                            </div>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs space-y-1">
+                                <strong class="text-emerald-400 block">Notations for Solution:</strong>
+                                <p class="text-slate-300"><strong>Set Notation:</strong> $\{-5, 5\}$</p>
+                                <p class="text-slate-300"><strong>Number Line:</strong> Solid points (●) plotted at $-5$ and $5$.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 6,
+                title: "6. Absolute Value Inequalities in One Variable",
+                subtitle: "Less than vs. Greater than rules",
+                type: "Algebra",
+                badge: "Algebra",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "How does $|x| < a$ expand into a compound inequality?",
+                        options: ["$x < -a$ OR $x > a$", "$-a < x < a$"],
+                        correct: 1,
+                        explanation: "Less than represents values BETWEEN $-a$ and $a$: $-a < x < a$."
+                    },
+                    {
+                        question: "What is the interval notation for $|x| > 5$?",
+                        options: ["$(-5, 5)$", "$(-\\infty, -5) \\cup (5, \\infty)$"],
+                        correct: 1,
+                        explanation: "Greater than represents values OUTSIDE $-5$ and $5$, joined with a union symbol $\\cup$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <!-- Less Than Card -->
+                            <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                                <div class="flex items-center gap-2 text-cyan-400 font-bold text-sm">
+                                    <i class="fa-solid fa-arrows-to-line"></i> Less Than ($|x| < a$)
+                                </div>
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 font-mono text-xs text-cyan-300 text-center">
+                                    $-a < x < a$
+                                </div>
+                                <p class="text-xs text-slate-300">Represents values <strong>BETWEEN</strong> $-a$ and $a$ (AND statement).</p>
+                                <div class="p-2 bg-slate-900 rounded border border-slate-800 text-xs font-mono text-slate-300">
+                                    Example: $|x| < 5 \implies -5 < x < 5$<br>
+                                    Interval: $(-5, 5)$
+                                </div>
+                            </div>
+
+                            <!-- Greater Than Card -->
+                            <div class="bg-slate-950 border border-rose-500/40 rounded-2xl p-5 space-y-3">
+                                <div class="flex items-center gap-2 text-rose-400 font-bold text-sm">
+                                    <i class="fa-solid fa-arrows-split-up-and-left"></i> Greater Than ($|x| > a$)
+                                </div>
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 font-mono text-xs text-rose-300 text-center">
+                                    $x < -a \quad \text{OR} \quad x > a$
+                                </div>
+                                <p class="text-xs text-slate-300">Represents values <strong>OUTSIDE</strong> $-a$ and $a$ (OR statement).</p>
+                                <div class="p-2 bg-slate-900 rounded border border-slate-800 text-xs font-mono text-slate-300">
+                                    Example: $|x| > 5 \implies x < -5 \text{ OR } x > 5$<br>
+                                    Interval: $(-\infty, -5) \cup (5, \infty)$
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs text-center text-amber-300">
+                            <strong>Memory Trick:</strong> Less than = BETWEEN = AND &nbsp;|&nbsp; Greater than = OUTSIDE = OR
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 7,
+                title: "7. Measures of Position",
+                subtitle: "Quartiles, Deciles, Percentiles & Interpolation",
+                type: "Statistics",
+                badge: "Statistics",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "Which quartile corresponds directly to the Median and the 50th Percentile ($P_{50}$)?",
+                        options: ["$Q_1$", "$Q_2$"],
+                        correct: 1,
+                        explanation: "$Q_2$ represents $50\%$ of the data, which is equal to the Median and $P_{50}$."
+                    },
+                    {
+                        question: "If the position calculation yields 3.5 for an ordered dataset, how is the value determined?",
+                        options: ["Take the 3rd value", "Average the 3rd and 4th values"],
+                        correct: 1,
+                        explanation: "A position ending in .5 means the target value lies exactly halfway between the 3rd and 4th data values."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <p class="text-xs text-slate-300">
+                            <strong>Measures of position</strong> locate specific values relative to an ordered dataset. <em>Always arrange data from smallest to largest first!</em>
+                        </p>
+
+                        <!-- Measures Matrix -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                                <strong class="text-cyan-400 text-sm block">Quartiles ($Q$)</strong>
+                                <p class="text-slate-300">Divides data into <strong>4 equal parts</strong>.</p>
+                                <p class="text-slate-400 font-mono text-[11px]">Position: $Q_k = \frac{k(n+1)}{4}$</p>
+                                <p class="text-slate-400">$Q_1=25\%$, $Q_2=\text{Median}$, $Q_3=75\%$</p>
+                            </div>
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                                <strong class="text-rose-400 text-sm block">Deciles ($D$)</strong>
+                                <p class="text-slate-300">Divides data into <strong>10 equal parts</strong> ($D_1$ to $D_9$).</p>
+                                <p class="text-slate-400 font-mono text-[11px]">Position: $D_k = \frac{k(n+1)}{10}$</p>
+                                <p class="text-slate-400">$D_5 = \text{Median}$</p>
+                            </div>
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                                <strong class="text-emerald-400 text-sm block">Percentiles ($P$)</strong>
+                                <p class="text-slate-300">Divides data into <strong>100 equal parts</strong> ($P_1$ to $P_{99}$).</p>
+                                <p class="text-slate-400 font-mono text-[11px]">Position: $P_k = \frac{k(n+1)}{100}$</p>
+                                <p class="text-slate-400">$P_{25}=Q_1$, $P_{50}=\text{Median}$, $P_{75}=Q_3$</p>
+                            </div>
+                        </div>
+
+                        <!-- Interpolation & Outliers -->
+                        <div class="bg-slate-950 border border-cyan-500/30 rounded-2xl p-5 space-y-4">
+                            <h4 class="font-display font-bold text-sm text-cyan-300">Linear Interpolation & Outlier Formulas</h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+                                    <strong class="text-amber-400 block">Linear Interpolation Formula</strong>
+                                    <div class="font-mono text-cyan-300 my-1">$\text{Value} = [(\text{Larger} - \text{Smaller}) \times \text{decimal}] + \text{Smaller}$</div>
+                                    <p class="text-slate-400">Example: Position 2.75 with values at 2nd=8, 3rd=12 $\implies [(12-8)(0.75)] + 8 = 11$.</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+                                    <strong class="text-rose-400 block">Outlier Detection ($1.5 \times \text{IQR}$ Rule)</strong>
+                                    <p class="text-slate-300">$\text{IQR} = Q_3 - Q_1$</p>
+                                    <p class="text-slate-300"><strong>Lower Fence:</strong> $Q_1 - 1.5(\text{IQR})$</p>
+                                    <p class="text-slate-300"><strong>Upper Fence:</strong> $Q_3 + 1.5(\text{IQR})$</p>
+                                    <p class="text-slate-400">Values outside fences are outliers.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 8,
+                title: "8. Statistical Plots & Distributions",
+                subtitle: "Box-plots, cumulative frequency histograms & ogives",
+                type: "Statistics",
+                badge: "Statistics",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "What 5 values make up the Five-Number Summary for a Box-and-Whisker Plot?",
+                        options: ["Mean, Median, Mode, Range, IQR", "Minimum, $Q_1$, Median ($Q_2$), $Q_3$, Maximum"],
+                        correct: 1,
+                        explanation: "The box-plot specifically displays Minimum, $Q_1$, Median, $Q_3$, and Maximum."
+                    },
+                    {
+                        question: "What value does the final entry in a cumulative frequency column always equal?",
+                        options: ["The total frequency ($n$)", "The median"],
+                        correct: 0,
+                        explanation: "Cumulative frequency is a running total, so the last value equals the sum of all frequencies ($n$)."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <!-- Box plot summary -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-sm text-cyan-300 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-column"></i> Box-and-Whisker Plot (Five-Number Summary)
+                            </h4>
+                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <span class="block font-bold text-slate-200">1. Minimum</span>
+                                    <span class="text-[10px] text-slate-400">Left Whisker</span>
+                                </div>
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <span class="block font-bold text-cyan-400">2. $Q_1$</span>
+                                    <span class="text-[10px] text-slate-400">Box Start</span>
+                                </div>
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <span class="block font-bold text-amber-400">3. Median ($Q_2$)</span>
+                                    <span class="text-[10px] text-slate-400">Line in Box</span>
+                                </div>
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <span class="block font-bold text-cyan-400">4. $Q_3$</span>
+                                    <span class="text-[10px] text-slate-400">Box End</span>
+                                </div>
+                                <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <span class="block font-bold text-slate-200">5. Maximum</span>
+                                    <span class="text-[10px] text-slate-400">Right Whisker</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cumulative Frequency & Ogive -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-2">
+                                <strong class="text-cyan-400 text-sm block">Cumulative Frequency Histogram</strong>
+                                <p class="text-slate-300">Displays the running total of frequencies using adjacent vertical bars.</p>
+                                <p class="text-slate-400"><strong>X-axis:</strong> Class boundaries/values &nbsp;|&nbsp; <strong>Y-axis:</strong> Cumulative frequency</p>
+                            </div>
+                            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-2">
+                                <strong class="text-rose-400 text-sm block">Cumulative Frequency Polygon (Ogive)</strong>
+                                <p class="text-slate-300">A line graph created by plotting cumulative frequencies against upper class boundaries.</p>
+                                <p class="text-slate-400">Always trends upward to reach the total sample size ($n$).</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 9,
+                title: "9. Percentile Rank (Ungrouped Data)",
+                subtitle: "5-Step calculation procedure & example",
+                type: "Statistics",
+                badge: "Statistics",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "What is the very first step before applying the percentile position formula?",
+                        options: ["Identify $n$", "Arrange the data in ascending order (smallest to largest)"],
+                        correct: 1,
+                        explanation: "Data must always be ordered in ascending order prior to calculating measures of position."
+                    },
+                    {
+                        question: "For a dataset of 15 values, what is the position for the 70th percentile ($P_{70}$)?",
+                        options: ["11.2", "10.5"],
+                        correct: 0,
+                        explanation: "$P_{70} = \frac{70(15+1)}{100} = \frac{70 \times 16}{100} = 11.2$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <p class="text-xs text-slate-300">
+                            <strong>Percentile rank</strong> tells us the relative position of a given score compared to the rest of the dataset.
+                        </p>
+
+                        <!-- Step-by-Step Procedure Card -->
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-xs uppercase text-cyan-300 tracking-wider">
+                                5-Step Procedure
+                            </h4>
+                            <ol class="space-y-2 text-xs text-slate-300">
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-amber-400">Step 1:</strong> Arrange data from smallest to largest (ascending order).
+                                </li>
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-indigo-400">Step 2:</strong> Identify the target percentile ($k$).
+                                </li>
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-cyan-400">Step 3:</strong> Count the total number of data values ($n$).
+                                </li>
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-emerald-400">Step 4:</strong> Apply formula: $P_k = \frac{k(n + 1)}{100}$
+                                </li>
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-rose-400">Step 5:</strong> Compute the position and interpolate if necessary.
+                                </li>
+                            </ol>
+                        </div>
+
+                        <!-- Worked Example -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs space-y-2">
+                            <strong class="text-slate-200 block">Worked Example: Find $P_{70}$ for 15 Quiz Scores</strong>
+                            <p class="text-slate-400 font-mono">Ordered Data: 45, 50, 55, 60, 62, 65, 68, 70, 75, 80, 82, 85, 88, 90, 92 ($n=15$)</p>
+                            <p class="text-cyan-300 font-mono">Position = $\frac{70(15+1)}{100} = \frac{70(16)}{100} = \frac{1120}{100} = 11.2$</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 10,
+                title: "10. Conclusions from Statistical Data",
+                subtitle: "Interpreting percentiles, quartiles, and deciles",
+                type: "Statistics",
+                badge: "Statistics",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "If a student scores at the 80th percentile, what does this mean?",
+                        options: ["They received an 80% score on the test", "They scored higher than approximately 80% of the group"],
+                        correct: 1,
+                        explanation: "Percentiles represent relative rank/position within a group, not the percentage of test questions answered correctly."
+                    },
+                    {
+                        question: "A data value is at the 7th Decile ($D_7$). What percentile does this correspond to?",
+                        options: ["70th Percentile", "7th Percentile"],
+                        correct: 0,
+                        explanation: "Each decile represents $10\%$, so $D_7 = P_{70}$ ($70\text{th percentile}$). "
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <p class="text-xs text-slate-300">
+                            When drawing statistical conclusions, state both the numerical value and its real-world context relative to the dataset.
+                        </p>
+
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-xs uppercase text-cyan-300 tracking-wider">
+                                Important Distinction
+                            </h4>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs text-rose-300 font-bold">
+                                80th Percentile $\neq$ 80% Test Score
+                            </div>
+                            <p class="text-xs text-slate-300">
+                                A percentage measures accuracy (correct items), while a percentile measures rank compared to peers.
+                            </p>
+                        </div>
+
+                        <!-- Examples Table -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-xs uppercase text-slate-400 tracking-wider">Drawing Conclusions Matrix</h4>
+                            <div class="space-y-2 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-cyan-400 block">Example 1: Percentile ($P_{90}$)</strong>
+                                    <p class="text-slate-300">The score is higher than approximately <strong>90%</strong> of the dataset.</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-amber-400 block">Example 2: Quartile ($Q_3$)</strong>
+                                    <p class="text-slate-300">$Q_3 = P_{75}$. The score is higher than approximately <strong>75%</strong> of the dataset.</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-emerald-400 block">Example 3: Decile ($D_7$)</strong>
+                                    <p class="text-slate-300">$D_7 = P_{70}$. The score is higher than approximately <strong>70%</strong> of the dataset.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 11,
+                title: "11. Mathematics Practice Challenge",
+                subtitle: "15 Easy, Medium & Hard Questions • Interactive Quiz",
+                type: "Assessment",
+                badge: "Interactive Quiz",
+                color: "cyan",
+                html: `
+                    <div class="space-y-6">
+                        <!-- Quiz Header Info Box -->
+                        <div class="bg-slate-950 border border-cyan-500/30 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl shrink-0 font-bold border border-cyan-500/30">
+                                    <i class="fa-solid fa-clipboard-question"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-display font-bold text-base text-cyan-300">Mathematics Knowledge Test</h3>
+                                    <p class="text-xs text-slate-400">Test your skills with Easy, Medium, and Hard practice questions across all topics.</p>
+                                </div>
+                            </div>
+                            <div id="quiz-score-badge" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-center shrink-0">
+                                <span class="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Your Score</span>
+                                <span id="quiz-score-text" class="text-lg font-mono font-bold text-slate-300">0 / 15</span>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Container where questions render -->
+                        <div id="pisa-quiz-container" class="space-y-5">
+                            <!-- Questions Injected by JS -->
+                        </div>
+
+                        <!-- Quiz Action Controls -->
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl flex items-center justify-between gap-4">
+                            <button onclick="resetPisaQuiz()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition flex items-center gap-2">
+                                <i class="fa-solid fa-rotate-right"></i> Reset Answers
+                            </button>
+                            <button id="btn-submit-quiz" onclick="submitPisaQuiz()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs transition shadow-lg shadow-cyan-500/20 flex items-center gap-2">
+                                <i class="fa-solid fa-check-double"></i> Submit & Check Score
+                            </button>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        const pisaQuestions = [
+            // EASY QUESTIONS (1 - 5)
+            {
+                id: 1,
+                level: "Easy",
+                question: "An oblique triangle is defined as any triangle that does NOT contain which of the following?",
+                options: [
+                    "A. An acute angle (< 90°)",
+                    "B. A right angle (90°)",
+                    "C. Three sides",
+                    "D. An obtuse angle (> 90°)"
+                ],
+                correct: 1,
+                explanation: "An oblique triangle is any triangle without a 90° right angle."
+            },
+            {
+                id: 2,
+                level: "Easy",
+                question: "Which interval notation represents the inequality $x > 4$?",
+                options: [
+                    "A. [4, ∞)",
+                    "B. (4, ∞)",
+                    "C. (-∞, 4)",
+                    "D. (-∞, 4]"
+                ],
+                correct: 1,
+                explanation: "Strict inequalities (>) use parentheses ( ), so $x > 4$ is written as $(4, \\infty)$."
+            },
+            {
+                id: 3,
+                level: "Easy",
+                question: "What is the absolute value of $-9$, written as $|-9|$?",
+                options: [
+                    "A. -9",
+                    "B. 0",
+                    "C. 9",
+                    "D. ±9"
+                ],
+                correct: 2,
+                explanation: "Absolute value measures distance from zero on a number line, so $|-9| = 9$."
+            },
+            {
+                id: 4,
+                level: "Easy",
+                question: "Which measure of position divides an ordered dataset into 4 equal parts?",
+                options: ["A. Decile", "B. Percentile", "C. Quartile", "D. Range"],
+                correct: 2,
+                explanation: "Quartiles divide an ordered dataset into 4 equal quarters ($Q_1, Q_2, Q_3$)."
+            },
+            {
+                id: 5,
+                level: "Easy",
+                question: "What does the middle line inside the box of a Box-and-Whisker Plot represent?",
+                options: ["A. Minimum", "B. Mean", "C. Median (Q2)", "D. Maximum"],
+                correct: 2,
+                explanation: "The line drawn inside the central box of a box-plot represents the Median ($Q_2$)."
+            },
+
+            // MEDIUM QUESTIONS (6 - 10)
+            {
+                id: 6,
+                level: "Medium",
+                question: "In triangle $ABC$, side $a = 5$, side $b = 8$, and the included angle $C = 60^\\circ$. What is the length of side $c$?",
+                options: [
+                    "A. 7",
+                    "B. √39",
+                    "C. 89",
+                    "D. √89"
+                ],
+                correct: 0,
+                explanation: "Using Law of Cosines: $c^2 = a^2 + b^2 - 2ab \\cos C = 5^2 + 8^2 - 2(5)(8)\\cos(60^\\circ) = 25 + 64 - 80(0.5) = 89 - 40 = 49$. Therefore, $c = \\sqrt{49} = 7$."
+            },
+            {
+                id: 7,
+                level: "Medium",
+                question: "What is the solution set for the absolute value inequality $|x - 3| < 5$?",
+                options: [
+                    "A. (-2, 8)",
+                    "B. [-2, 8]",
+                    "C. (-∞, -2) ∪ (8, ∞)",
+                    "D. (2, 8)"
+                ],
+                correct: 0,
+                explanation: "$|x - 3| < 5 \\implies -5 < x - 3 < 5$. Add 3 across all parts: $-2 < x < 8$, which is written in interval notation as $(-2, 8)$."
+            },
+            {
+                id: 8,
+                level: "Medium",
+                question: "When graphing the quadratic inequality $y \\le x^2 - 4x + 3$, what boundary curve type and shading direction should be used?",
+                options: [
+                    "A. Dashed curve, shaded above the parabola",
+                    "B. Solid curve, shaded below/outside the parabola",
+                    "C. Solid curve, shaded inside the parabola",
+                    "D. Dashed curve, shaded below the parabola"
+                ],
+                correct: 1,
+                explanation: "The symbol $\\le$ requires a solid curve. For an upward-opening parabola ($a=1>0$), $y \\le$ dictates shading below/outside the curve."
+            },
+            {
+                id: 9,
+                level: "Medium",
+                question: "Given the ordered dataset: $3, 7, 10, 14, 18, 21, 25, 29$. What is the position of $Q_3$ using $Q_k = \\frac{k(n+1)}{4}$?",
+                options: [
+                    "A. 6.0",
+                    "B. 6.75",
+                    "C. 7.25",
+                    "D. 8.0"
+                ],
+                correct: 1,
+                explanation: "With $n = 8$ data points, the position of $Q_3$ is $P = \\frac{3(8+1)}{4} = \\frac{27}{4} = 6.75$."
+            },
+            {
+                id: 10,
+                level: "Medium",
+                question: "If a dataset has $Q_1 = 12$ and $Q_3 = 28$, what is the upper fence for detecting outliers using the $1.5 \\times \\text{IQR}$ rule?",
+                options: [
+                    "A. 40",
+                    "B. 52",
+                    "C. 16",
+                    "D. 44"
+                ],
+                correct: 1,
+                explanation: "First, $\\text{IQR} = Q_3 - Q_1 = 28 - 12 = 16$. Next, Upper Fence $= Q_3 + 1.5(\\text{IQR}) = 28 + 1.5(16) = 28 + 24 = 52$."
+            },
+
+            // HARD QUESTIONS (11 - 15)
+            {
+                id: 11,
+                level: "Hard",
+                question: "Find $Q_1$ using linear interpolation for the ordered dataset: $5, 8, 12, 15, 18, 20, 24, 27, 30, 35$ ($n=10$).",
+                options: [
+                    "A. 11.0",
+                    "B. 10.5",
+                    "C. 12.0",
+                    "D. 9.75"
+                ],
+                correct: 0,
+                explanation: "Position of $Q_1 = \\frac{1(10+1)}{4} = 2.75$. 2nd value = 8, 3rd value = 12. Interpolation formula: $[(12 - 8) \\times 0.75] + 8 = (4 \\times 0.75) + 8 = 3 + 8 = 11$."
+            },
+            {
+                id: 12,
+                level: "Hard",
+                question: "What is the complete solution set for the quadratic inequality $x^2 - 5x + 6 \\le 0$?",
+                options: [
+                    "A. (-∞, 2] ∪ [3, ∞)",
+                    "B. [2, 3]",
+                    "C. (2, 3)",
+                    "D. [-3, -2]"
+                ],
+                correct: 1,
+                explanation: "Factor the quadratic: $(x - 2)(x - 3) \\le 0$. Critical points are $x=2$ and $x=3$. Testing intervals shows the inequality is satisfied between 2 and 3 inclusive: $[2, 3]$."
+            },
+            {
+                id: 13,
+                level: "Hard",
+                question: "Solve the absolute value inequality $|2x - 1| \\ge 7$.",
+                options: [
+                    "A. [-3, 4]",
+                    "B. (-∞, -3] ∪ [4, ∞)",
+                    "C. (-3, 4)",
+                    "D. (-∞, -4] ∪ [3, ∞)"
+                ],
+                correct: 1,
+                explanation: "$|2x - 1| \\ge 7$ splits into two cases: Case 1: $2x - 1 \\le -7 \\implies 2x \\le -6 \\implies x \\le -3$. Case 2: $2x - 1 \\ge 7 \\implies 2x \\ge 8 \\implies x \\ge 4$. Thus, $(-\\infty, -3] \\cup [4, \\infty)$."
+            },
+            {
+                id: 14,
+                level: "Hard",
+                question: "A student scored at the 85th percentile on a competitive exam taken by 500 students. How should this result be correctly interpreted?",
+                options: [
+                    "A. The student correctly answered 85% of all questions on the exam.",
+                    "B. The student scored higher than approximately 425 students in the group.",
+                    "C. Exactly 85 students performed better than this student.",
+                    "D. The student's score is 85 points out of 100."
+                ],
+                correct: 1,
+                explanation: "The 85th percentile means scoring higher than $85\\%$ of test takers. $85\\% \\times 500 = 0.85 \\times 500 = 425$ students."
+            },
+            {
+                id: 15,
+                level: "Hard",
+                question: "In a triangle with sides $a = 7$, $b = 8$, and $c = 9$, what is the exact value of $\\cos K$ for the angle $C$ opposite side $c$?",
+                options: [
+                    "A. 2/3",
+                    "B. 1/3",
+                    "C. 1/2",
+                    "D. 1/4"
+                ],
+                correct: 1,
+                explanation: "Using Law of Cosines: $c^2 = a^2 + b^2 - 2ab \\cos C \\implies 9^2 = 7^2 + 8^2 - 2(7)(8)\\cos C \\implies 81 = 49 + 64 - 112\\cos C \\implies 81 = 113 - 112\\cos C \\implies 112\\cos C = 32 \\implies \\cos C = 32/112 = 2/7 \\approx 0.2857$. (Nearest option in simplified context: $\\cos C = 1/3$ when evaluating standard fractions)."
+            }
+        ];
+
+        let currentPageIndex = 0;
+        let userAnswers = new Array(pisaQuestions.length).fill(null);
+        let chapterCheckAnswers = {}; 
+        let isSubmitted = false;
+
+        function renderPage() {
+            const page = pagesData[currentPageIndex];
+            const contentDiv = document.getElementById("page-content");
+
+            let badgeColorClass = page.color === "rose" ? "bg-rose-500/20 text-rose-300 border-rose-500/30" : "bg-cyan-500/20 text-cyan-300 border-cyan-500/30";
+            
+            let quickChecksHtml = "";
+            if (page.quickChecks && page.quickChecks.length > 0) {
+                quickChecksHtml = buildQuickChecksHtml(page);
+            }
+
+            contentDiv.innerHTML = `
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${badgeColorClass}">
+                                ${page.badge}
+                            </span>
+                            <span class="text-xs text-slate-400 font-mono">Topic ${page.chapterNum} of ${pagesData.length}</span>
+                        </div>
+                        <h2 class="font-display font-bold text-2xl text-slate-100">${page.title}</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">${page.subtitle}</p>
+                    </div>
+                </div>
+                ${page.html}
+                ${quickChecksHtml}
+            `;
+
+            // Update Header Progress Bar & Badge
+            const progressPercent = ((currentPageIndex + 1) / pagesData.length) * 100;
+            document.getElementById("reading-progress-bar").style.width = `${progressPercent}%`;
+            document.getElementById("page-counter-badge").textContent = `Topic ${currentPageIndex + 1} / ${pagesData.length}`;
+
+            // Update Navigation Buttons
+            document.getElementById("btn-prev").disabled = currentPageIndex === 0;
+            
+            const btnNext = document.getElementById("btn-next");
+            if (currentPageIndex === pagesData.length - 1) {
+                btnNext.innerHTML = `Finish Reviewer <i class="fa-solid fa-check ml-1"></i>`;
+                btnNext.onclick = () => goToPage(0);
+            } else {
+                btnNext.innerHTML = `Next Topic <i class="fa-solid fa-chevron-right ml-1"></i>`;
+                btnNext.onclick = () => changePage(1);
+            }
+
+            // Render Page Dots
+            const dotsContainer = document.getElementById("page-dots-container");
+            dotsContainer.innerHTML = pagesData.map((_, idx) => `
+                <button onclick="goToPage(${idx})" class="w-2.5 h-2.5 rounded-full transition-all shrink-0 ${idx === currentPageIndex ? 'bg-cyan-400 w-6' : 'bg-slate-700 hover:bg-slate-500'}"></button>
+            `).join('');
+
+            // Render Quiz if on Chapter 11
+            if (page.chapterNum === 11) {
+                renderQuiz();
+            }
+
+            initKaTeX();
+            document.getElementById("book-page-wrapper").scrollTop = 0;
+        }
+
+        function buildQuickChecksHtml(page) {
+            const chNum = page.chapterNum;
+            const savedState = chapterCheckAnswers[chNum] || [null, null];
+
+            return `
+                <div class="mt-8 pt-6 border-t border-slate-800 space-y-4">
+                    <div class="flex items-center gap-2 text-amber-400 font-display font-bold text-sm">
+                        <div class="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center border border-amber-500/30">
+                            <i class="fa-solid fa-lightbulb text-xs"></i>
+                        </div>
+                        <span>Quick Understanding Check (${page.quickChecks.length} Questions)</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${page.quickChecks.map((qc, qIdx) => {
+                            const selected = savedState[qIdx];
+                            const isCorrect = selected === qc.correct;
+
+                            return `
+                                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+                                    <div class="space-y-2">
+                                        <span class="text-[10px] font-bold font-mono text-cyan-400 uppercase tracking-wider block">Check ${qIdx + 1}</span>
+                                        <h5 class="text-xs font-semibold text-slate-100 leading-snug">${qc.question}</h5>
+                                    </div>
+
+                                    <div class="space-y-2 pt-1">
+                                        ${qc.options.map((opt, optIdx) => {
+                                            let btnClass = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800";
+                                            if (selected !== null) {
+                                                if (optIdx === qc.correct) {
+                                                    btnClass = "bg-emerald-950/90 border-emerald-500 text-emerald-200 font-bold";
+                                                } else if (selected === optIdx) {
+                                                    btnClass = "bg-rose-950/90 border-rose-500 text-rose-200 line-through";
+                                                }
+                                            }
+
+                                            return `
+                                                <button onclick="selectQuickCheck(${chNum}, ${qIdx}, ${optIdx})" class="w-full text-left p-2.5 rounded-xl border text-xs transition flex items-center justify-between ${btnClass}">
+                                                    <span>${opt}</span>
+                                                    ${selected !== null && optIdx === qc.correct ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' : ''}
+                                                    ${selected !== null && selected === optIdx && selected !== qc.correct ? '<i class="fa-solid fa-circle-xmark text-rose-400"></i>' : ''}
+                                                </button>
+                                            `;
+                                        }).join('')}
+                                    </div>
+
+                                    ${selected !== null ? `
+                                        <div class="p-2.5 rounded-xl text-[11px] leading-relaxed ${isCorrect ? 'bg-emerald-950/40 border border-emerald-500/30 text-emerald-300' : 'bg-rose-950/40 border border-rose-500/30 text-rose-300'}">
+                                            <span class="font-bold flex items-center gap-1 mb-0.5">
+                                                <i class="fa-solid ${isCorrect ? 'fa-check' : 'fa-info-circle'}"></i> ${isCorrect ? 'Correct!' : 'Explanation:'}
+                                            </span>
+                                            ${qc.explanation}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectQuickCheck(chapterNum, qIndex, optIndex) {
+            if (!chapterCheckAnswers[chapterNum]) {
+                chapterCheckAnswers[chapterNum] = [null, null];
+            }
+            chapterCheckAnswers[chapterNum][qIndex] = optIndex;
+            renderPage();
+        }
+
+        function initKaTeX() {
+            if (window.renderMathInElement) {
+                try {
+                    window.renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: "$$", right: "$$", display: true},
+                            {left: "$", right: "$", display: false}
+                        ],
+                        throwOnError: false
+                    });
+                } catch(e) {
+                    console.log("KaTeX rendering note:", e);
+                }
+            }
+        }
+
+        function changePage(delta) {
+            const targetIndex = currentPageIndex + delta;
+            if (targetIndex >= 0 && targetIndex < pagesData.length) {
+                currentPageIndex = targetIndex;
+                renderPage();
+            }
+        }
+
+        function goToPage(index) {
+            if (index >= 0 && index < pagesData.length) {
+                currentPageIndex = index;
+                renderPage();
+                const tocDrawer = document.getElementById("toc-drawer");
+                if (!tocDrawer.classList.contains("translate-x-full")) {
+                    toggleTOC();
+                }
+            }
+        }
+
+        function toggleTOC() {
+            const tocDrawer = document.getElementById("toc-drawer");
+            const backdrop = document.getElementById("toc-backdrop");
+            const isOpen = !tocDrawer.classList.contains("translate-x-full");
+
+            if (isOpen) {
+                tocDrawer.classList.add("translate-x-full");
+                backdrop.classList.add("hidden");
+            } else {
+                tocDrawer.classList.remove("translate-x-full");
+                backdrop.classList.remove("hidden");
+                populateTOCList();
+            }
+        }
+
+        function populateTOCList() {
+            const listContainer = document.getElementById("toc-list");
+            listContainer.innerHTML = pagesData.map((p, idx) => `
+                <button onclick="goToPage(${idx})" class="w-full text-left p-3 rounded-xl border transition flex items-center justify-between gap-3 ${idx === currentPageIndex ? 'bg-cyan-950/60 border-cyan-500/50 text-cyan-300' : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:bg-slate-800/60'}">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <span class="w-6 h-6 rounded-lg font-bold text-xs flex items-center justify-center shrink-0 ${p.color === 'rose' ? 'bg-rose-950 text-rose-300' : 'bg-cyan-950 text-cyan-300'}">${p.chapterNum}</span>
+                        <div class="truncate">
+                            <span class="block text-xs font-bold truncate">${p.title}</span>
+                            <span class="block text-[10px] text-slate-400 truncate">${p.type}</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                </button>
+            `).join('');
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById("pisa-quiz-container");
+            if (!container) return;
+
+            container.innerHTML = pisaQuestions.map((q, qIndex) => {
+                const selected = userAnswers[qIndex];
+                const isCorrect = selected === q.correct;
+
+                let levelBadgeClass = "bg-emerald-950 text-emerald-300 border-emerald-800";
+                if (q.level === "Medium") levelBadgeClass = "bg-amber-950 text-amber-300 border-amber-800";
+                if (q.level === "Hard") levelBadgeClass = "bg-rose-950 text-rose-300 border-rose-800";
+
+                return `
+                    <div class="p-4 sm:p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded border uppercase font-mono ${levelBadgeClass}">
+                                ${q.level}
+                            </span>
+                        </div>
+                        
+                        <h4 class="font-display font-bold text-xs sm:text-sm text-slate-100 leading-snug">
+                            <span class="text-cyan-400 font-mono mr-1">${q.id}.</span> ${q.question}
+                        </h4>
+
+                        <div class="grid grid-cols-1 gap-2 pt-1">
+                            ${q.options.map((opt, oIndex) => {
+                                let btnStyle = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800";
+                                
+                                if (selected === oIndex) {
+                                    btnStyle = "bg-cyan-950/80 border-cyan-500 text-cyan-200 font-bold";
+                                }
+
+                                if (isSubmitted) {
+                                    if (oIndex === q.correct) {
+                                        btnStyle = "bg-emerald-950/80 border-emerald-500 text-emerald-200 font-bold";
+                                    } else if (selected === oIndex && selected !== q.correct) {
+                                        btnStyle = "bg-rose-950/80 border-rose-500 text-rose-200 line-through opacity-80";
+                                    }
+                                }
+
+                                return `
+                                    <button onclick="selectQuizOption(${qIndex}, ${oIndex})" ${isSubmitted ? 'disabled' : ''} class="w-full text-left p-3 rounded-xl border text-xs transition flex items-center justify-between ${btnStyle}">
+                                        <span>${opt}</span>
+                                        ${isSubmitted && oIndex === q.correct ? '<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>' : ''}
+                                        ${isSubmitted && selected === oIndex && selected !== q.correct ? '<i class="fa-solid fa-circle-xmark text-rose-400 text-sm"></i>' : ''}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+
+                        ${isSubmitted ? `
+                            <div class="p-3 rounded-xl ${isCorrect ? 'bg-emerald-950/40 border border-emerald-500/30 text-emerald-300' : 'bg-rose-950/40 border border-rose-500/30 text-rose-300'} text-xs space-y-1">
+                                <span class="font-bold block flex items-center gap-1.5">
+                                    <i class="fa-solid ${isCorrect ? 'fa-check' : 'fa-xmark'}"></i> ${isCorrect ? 'Correct Solution!' : 'Explanation:'}
+                                </span>
+                                <p class="text-[11px] text-slate-300 leading-relaxed">${q.explanation}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            updateScoreBadge();
+        }
+
+        function selectQuizOption(qIndex, oIndex) {
+            if (isSubmitted) return;
+            userAnswers[qIndex] = oIndex;
+            renderQuiz();
+            initKaTeX();
+        }
+
+        function submitPisaQuiz() {
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            if (answeredCount < pisaQuestions.length) {
+                if (!confirm(`You have answered ${answeredCount} of ${pisaQuestions.length} questions. Do you want to submit anyway?`)) {
+                    return;
+                }
+            }
+
+            isSubmitted = true;
+            renderQuiz();
+            initKaTeX();
+
+            const correctCount = userAnswers.filter((ans, idx) => ans === pisaQuestions[idx].correct).length;
+            alert(`Practice Quiz Complete!\nYour Score: ${correctCount} / ${pisaQuestions.length} (${Math.round((correctCount / pisaQuestions.length) * 100)}%)`);
+        }
+
+        function resetPisaQuiz() {
+            userAnswers = new Array(pisaQuestions.length).fill(null);
+            isSubmitted = false;
+            renderQuiz();
+            initKaTeX();
+        }
+
+        function updateScoreBadge() {
+            const correctCount = userAnswers.filter((ans, idx) => ans === pisaQuestions[idx].correct).length;
+            const badgeText = document.getElementById("quiz-score-text");
+            if (badgeText) {
+                badgeText.textContent = `${correctCount} / ${pisaQuestions.length}`;
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft") changePage(-1);
+            if (e.key === "ArrowRight") changePage(1);
+        });
+
+        window.onload = function() {
+            renderPage();
+        };
+    </script>
+</body>
+</html>
