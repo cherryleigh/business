@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Mastery: Grade 10 Comprehensive Reviewer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        math: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="h-full font-sans antialiased flex flex-col bg-slate-950 text-slate-100 custom-scrollbar">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-xl">
+                    <i class="fa-solid fa-calculator text-blue-400"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-100 leading-tight">MathMastery App</h1>
+                    <p class="text-xs text-slate-400">Grade 10 Mathematics</p>
+                </div>
+            </div>
+
+            <!-- View Switcher Tabs -->
+            <div class="flex items-center gap-2 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60">
+                <button id="nav-quiz-btn" onclick="switchTab('quiz')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm">
+                    <i class="fa-solid fa-list-check mr-1.5"></i>Review & Practice
+                </button>
+                <button id="nav-tool-btn" onclick="switchTab('tool')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all">
+                    <i class="fa-solid fa-ruler-combined mr-1.5"></i>Triangle Solver
+                </button>
+                <button id="nav-summary-btn" onclick="switchTab('summary')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all">
+                    <i class="fa-solid fa-book-open mr-1.5"></i>Cheat Sheet
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
+
+        <!-- TAB 1: REVIEW TEXT & QUIZ SECTION -->
+        <section id="tab-quiz" class="flex flex-col gap-8">
+            
+            <!-- SECTION 1: TEXT REVIEWER (BEFORE QUESTIONS) -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+                <div class="border-b border-slate-800 pb-4">
+                    <span class="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-full text-xs font-bold">
+                        Study Guide First
+                    </span>
+                    <h2 class="text-2xl font-bold text-slate-100 mt-3">Grade 10 Mathematics Reviewer</h2>
+                    <p class="text-slate-400 text-sm mt-1">
+                        Read through these key concepts before testing your knowledge on the interactive quiz below.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Geometry Unit -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-blue-400 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-shapes"></i> 1. Geometry: Law of Cosines
+                            </h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Used for solving non-right (oblique) triangles when given:
+                            </p>
+                            <ul class="text-xs text-slate-400 space-y-1 list-disc list-inside">
+                                /><strong class="text-slate-200">SAS</strong> (Side-Angle-Side)</li>
+                                /><strong class="text-slate-200">SSS</strong> (Side-Side-Side)</li>
+                            </ul>
+                            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 font-mono text-xs text-blue-300 space-y-1">
+                                <p>a² = b² + c² - 2bc cos(A)</p>
+                                <p>b² = a² + c² - 2ac cos(B)</p>
+                                <p>c² = a² + b² - 2ab cos(C)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Algebra Unit -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-emerald-400 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-equals"></i> 2. Algebra: Quadratic Inequalities
+                            </h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Defines regions on a plane bounded by quadratic functions.
+                            </p>
+                            <ul class="text-xs text-slate-400 space-y-2">
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-emerald-300">Strict (&lt;, &gt;):</strong> Dashed boundary curve. Interval notation uses parentheses <strong>( )</strong>.
+                                </li>
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-emerald-300">Non-Strict (≤, ≥):</strong> Solid boundary curve. Interval notation uses brackets <strong>[ ]</strong>.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Unit -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-indigo-400 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line"></i> 3. Statistics: Position Measures
+                            </h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Quantifies relative positions within ordered datasets:
+                            </p>
+                            <ul class="text-xs text-slate-400 space-y-2">
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-indigo-300">Quartiles (Q):</strong> Split data into 4 equal parts.
+                                </li>
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                    <strong class="text-indigo-300">Deciles (D) & Percentiles (P):</strong> Split into 10 and 100 parts.
+                                </li>
+                                <li class="p-2 bg-slate-900 rounded-lg border border-slate-800 font-mono text-indigo-200 text-center">
+                                    Median = Q2 = D5 = P50
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: INTERACTIVE REVIEW QUIZ -->
+            <div class="flex flex-col gap-6">
+                
+                <!-- Controls & Progress Header -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                    
+                    <!-- Category Filter -->
+                    <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between gap-3">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-filter text-blue-400"></i> Filter Competency Area
+                        </label>
+                        <select id="category-select" onchange="filterCategory(this.value)" class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="all">All Topics</option>
+                            <option value="geometry">1. Geometry (Law of Cosines & Triangles)</option>
+                            <option value="algebra">2. Algebra (Quadratic Inequalities)</option>
+                            <option value="stats">3. Statistics (Measures of Position)</option>
+                        </select>
+                    </div>
+
+                    <!-- Quiz Mode Toggle -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between gap-2">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Learning Mode</span>
+                        <div class="flex items-center justify-between bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                            <button id="mode-study" onclick="setMode('study')" class="flex-1 py-1 text-xs font-bold rounded-lg transition-all bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                                <i class="fa-solid fa-graduation-cap mr-1"></i> Study (Instant)
+                            </button>
+                            <button id="mode-exam" onclick="setMode('exam')" class="flex-1 py-1 text-xs font-bold rounded-lg text-slate-400 transition-all hover:text-slate-200">
+                                <i class="fa-solid fa-stopwatch mr-1"></i> Exam Mode
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Score / Progress Quick Counter -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Score & Progress</p>
+                            <p id="score-text" class="text-2xl font-extrabold text-blue-400 mt-1">0 / 0 <span class="text-xs text-slate-400 font-normal">(0%)</span></p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 text-lg font-bold" id="streak-badge">
+                            🔥 0
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Card Container -->
+                <div id="quiz-card-wrapper" class="relative">
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col gap-6">
+                        
+                        <!-- Meta Header -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
+                            <div class="flex items-center gap-2">
+                                <span id="question-number-badge" class="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-full text-xs font-bold">
+                                    Question 1
+                                </span>
+                                <span id="competency-tag" class="px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs font-semibold">
+                                    Loading...
+                                </span>
+                            </div>
+                            <button onclick="toggleBookmark()" id="bookmark-btn" class="text-slate-500 hover:text-amber-400 transition text-sm flex items-center gap-1.5 font-semibold">
+                                <i class="fa-regular fa-bookmark"></i> Save Question
+                            </button>
+                        </div>
+
+                        <!-- Question Text -->
+                        <div>
+                            <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-100 leading-relaxed">
+                                Loading Question...
+                            </h2>
+                        </div>
+
+                        <!-- Answer Options -->
+                        <div id="options-container" class="grid grid-cols-1 gap-3">
+                            <!-- Dynamic options generated by JS -->
+                        </div>
+
+                        <!-- Hint Drawer -->
+                        <div id="hint-box" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-amber-200 text-xs sm:text-sm leading-relaxed">
+                            <i class="fa-solid fa-lightbulb text-amber-400 mr-2"></i>
+                            <span id="hint-text"></span>
+                        </div>
+
+                        <!-- Detailed Explanation Drawer -->
+                        <div id="explanation-box" class="hidden bg-slate-950 border border-slate-800 rounded-2xl p-5 flex flex-col gap-3">
+                            <div class="flex items-center gap-2 font-bold text-sm text-blue-400">
+                                <i class="fa-solid fa-circle-check"></i> Step-by-Step Explanation
+                            </div>
+                            <p id="explanation-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+                        </div>
+
+                        <!-- Card Footer Actions -->
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                            <button onclick="showHint()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-lightbulb text-amber-400"></i> Need a Hint?
+                            </button>
+                            <div class="flex items-center gap-3">
+                                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                                    <i class="fa-solid fa-arrow-left mr-1"></i> Prev
+                                </button>
+                                <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-900/30 transition-all flex items-center gap-2">
+                                    Next <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Quiz Results Modal -->
+                <div id="results-modal" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center flex flex-col items-center gap-6 shadow-2xl">
+                    <div class="w-20 h-20 rounded-full bg-blue-500/10 border-2 border-blue-500 flex items-center justify-center text-blue-400 text-3xl">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-100">Review Complete!</h2>
+                        <p class="text-slate-400 text-sm mt-1">Here is your Grade 10 Math mastery breakdown.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-lg my-2">
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                            <p class="text-xs font-semibold text-slate-400">Final Score</p>
+                            <p id="final-score-val" class="text-2xl font-black text-blue-400 mt-1">0%</p>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                            <p class="text-xs font-semibold text-slate-400">Correct Answers</p>
+                            <p id="final-correct-val" class="text-2xl font-black text-slate-100 mt-1">0 / 0</p>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                            <p class="text-xs font-semibold text-slate-400">Max Streak</p>
+                            <p id="final-streak-val" class="text-2xl font-black text-amber-400 mt-1">0 🔥</p>
+                        </div>
+                    </div>
+
+                    <button onclick="restartQuiz()" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-blue-900/40 flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Retake / Practice Again
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- TAB 2: INTERACTIVE TOOL (Triangle Solver) -->
+        <section id="tab-tool" class="hidden flex-col gap-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col gap-6">
+                <div>
+                    <span class="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-full text-xs font-bold">
+                        Interactive Tool
+                    </span>
+                    <h2 class="text-2xl font-bold text-slate-100 mt-3">Law of Cosines Calculator</h2>
+                    <p class="text-slate-400 text-sm mt-1">
+                        Use this tool to find a missing side of an oblique triangle when given two sides and the included angle (SAS).
+                    </p>
+                </div>
+
+                <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Inputs -->
+                    <div class="flex flex-col gap-4">
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Side b length</label>
+                            <input type="number" id="calc-b" value="5" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Side c length</label>
+                            <input type="number" id="calc-c" value="7" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Angle A (Degrees)</label>
+                            <input type="number" id="calc-angleA" value="45" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button onclick="calculateTriangle()" class="mt-2 w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/30 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator"></i> Calculate Side a
+                        </button>
+                    </div>
+
+                    <!-- Output visual -->
+                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 flex flex-col justify-center items-center text-center gap-4 relative">
+                        <div class="absolute top-4 left-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Result</div>
+                        
+                        <div class="text-5xl font-black text-blue-400" id="calc-result">
+                            5.05
+                        </div>
+                        
+                        <div class="text-sm text-slate-400 text-left bg-slate-950 p-4 rounded-lg border border-slate-800 w-full font-mono mt-4">
+                            <div class="text-slate-300 font-bold mb-2">Step-by-Step:</div>
+                            <div id="calc-steps">
+                                a² = 5² + 7² - 2(5)(7)cos(45°)<br>
+                                a² = 25 + 49 - 70(0.7071)<br>
+                                a² = 74 - 49.497<br>
+                                a² = 24.503<br>
+                                a ≈ 4.95
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: CHEAT SHEET & SUMMARY -->
+        <section id="tab-summary" class="hidden flex-col gap-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <span class="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-full text-xs font-bold">
+                        Quick Reference
+                    </span>
+                    <h2 class="text-2xl font-bold text-slate-100 mt-3">Grade 10 Formulas Cheat Sheet</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- Card 1: Geometry -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-blue-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-play"></i> Law of Cosines
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-2">Used for oblique triangles given SAS or SSS.</p>
+                        <ul class="space-y-2 text-xs text-slate-300 leading-relaxed font-mono bg-slate-900 p-3 rounded-xl border border-slate-800">
+                            <li>a² = b² + c² - 2bc cos(A)</li>
+                            <li>b² = a² + c² - 2ac cos(B)</li>
+                            <li>c² = a² + b² - 2ab cos(C)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 2: Statistics -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-indigo-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-chart-simple"></i> Measures of Position
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-2">Used to find data locations in an ordered set.</p>
+                        <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
+                            <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                <span class="font-bold text-indigo-300">Quartiles (Q):</span> Divides into 4. Qk = k(n+1)/4
+                            </li>
+                            <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                <span class="font-bold text-indigo-300">Deciles (D):</span> Divides into 10. Dk = k(n+1)/10
+                            </li>
+                            <li class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                                <span class="font-bold text-indigo-300">Equivalencies:</span> Q2 = D5 = P50 (Median)
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Card 3: Algebra -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 md:col-span-2">
+                        <h3 class="font-bold text-emerald-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-equals"></i> Quadratic Inequalities
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                                <strong class="text-emerald-300">Strict (&lt;, &gt;)</strong><br>
+                                Uses dashed boundary lines. Parentheses ( ) in interval notation.
+                            </div>
+                            <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                                <strong class="text-emerald-300">Non-Strict (≤, ≥)</strong><br>
+                                Uses solid boundary lines. Brackets [ ] in interval notation.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 bg-slate-900 py-4 text-center text-xs text-slate-500">
+        MathMastery &bull; Grade 10 Mathematics Interactive Reviewer
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- QUIZ DATASET ---
+        const ALL_QUESTIONS = [
+            {
+                id: 1,
+                category: "geometry",
+                competencyTag: "Geometry: Law of Cosines",
+                question: "Which formula accurately represents the Law of Cosines used to find side 'a'?",
+                options: [
+                    "a² = b² + c² - 2bc cos A",
+                    "a² = b² + c² + 2bc cos A",
+                    "a = b + c - cos A",
+                    "a² = b² - c² - 2bc sin A"
+                ],
+                correctIndex: 0,
+                hint: "Remember it closely resembles the Pythagorean theorem, but with a subtraction component at the end.",
+                explanation: "The Law of Cosines is a generalized form of the Pythagorean theorem. To find side a, the correct equation is a² = b² + c² - 2bc cos A."
+            },
+            {
+                id: 2,
+                category: "geometry",
+                competencyTag: "Geometry: Law of Cosines",
+                question: "Under which specific triangle conditions must you use the Law of Cosines instead of the Law of Sines?",
+                options: [
+                    "When you know Side-Angle-Side (SAS) or Side-Side-Side (SSS).",
+                    "When you know Angle-Angle-Angle (AAA).",
+                    "When dealing strictly with right-angled triangles.",
+                    "When you know Angle-Angle-Side (AAS)."
+                ],
+                correctIndex: 0,
+                hint: "Law of Cosines requires knowing either all three sides or an angle trapped between two known sides.",
+                explanation: "The Law of Cosines is specifically required when you have a Side-Angle-Side (SAS) or Side-Side-Side (SSS) scenario because you do not have a known opposing angle-side pair for the Law of Sines."
+            },
+            {
+                id: 3,
+                category: "algebra",
+                competencyTag: "Algebra: Inequalities",
+                question: "What interval notation accurately represents the inequality x ≥ 5?",
+                options: [
+                    "(5, ∞)",
+                    "[5, ∞)",
+                    "(5, ∞]",
+                    "[-∞, 5]"
+                ],
+                correctIndex: 1,
+                hint: "Since it is 'greater than OR equal to', the number 5 is included in the set.",
+                explanation: "A bracket [ indicates the endpoint is included (≥ or ≤), while a parenthesis ( indicates infinity or an excluded endpoint. Thus, x ≥ 5 is written as [5, ∞)."
+            },
+            {
+                id: 4,
+                category: "algebra",
+                competencyTag: "Algebra: Inequalities",
+                question: "When graphing the quadratic inequality y > x² - 4, what type of boundary curve should be drawn?",
+                options: [
+                    "A dashed parabola because the inequality is strict (>).",
+                    "A solid parabola because all parabolas are solid.",
+                    "A dashed straight line.",
+                    "A solid parabola because the inequality includes 'greater than'."
+                ],
+                correctIndex: 0,
+                hint: "Strict inequalities do not include the points exactly on the line.",
+                explanation: "Strict inequalities (< or >) indicate that the boundary curve itself is not part of the solution set, so it is drawn as a dashed line."
+            },
+            {
+                id: 5,
+                category: "stats",
+                competencyTag: "Statistics: Position",
+                question: "Which of the following measures of position is perfectly equivalent to the Median (Q2) of a dataset?",
+                options: [
+                    "The 5th Decile (D5) and 50th Percentile (P50)",
+                    "The 2nd Decile (D2) and 25th Percentile (P25)",
+                    "The 1st Quartile (Q1) and 75th Percentile (P75)",
+                    "The 9th Decile (D9)"
+                ],
+                correctIndex: 0,
+                hint: "The median splits the data perfectly in half (50%).",
+                explanation: "The median represents the 50% mark of the data. Q2 (2/4 = 50%), D5 (5/10 = 50%), and P50 (50/100 = 50%) all refer to the exact same position."
+            },
+            {
+                id: 6,
+                category: "stats",
+                competencyTag: "Statistics: Position",
+                question: "If a student scores in the 85th percentile on a standardized math test, what does this mathematically imply?",
+                options: [
+                    "The student scored higher than or equal to 85% of all test takers.",
+                    "The student answered exactly 85% of the questions correctly.",
+                    "The student got 85 questions right out of 100.",
+                    "The student scored lower than 85% of the class."
+                ],
+                correctIndex: 0,
+                hint: "Percentiles measure relative rank against others, not raw score percentages.",
+                explanation: "A percentile rank indicates relative position. The 85th percentile means the student's score was greater than or equal to roughly 85% of the other participants, regardless of the raw score."
+            }
+        ];
+
+        // --- APP STATE ---
+        let currentFilteredQuestions = [...ALL_QUESTIONS];
+        let currentIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let maxStreak = 0;
+        let quizMode = 'study';
+        let userAnswers = {}; 
+        let bookmarked = new Set();
+
+        // --- INIT ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderQuestion();
+            calculateTriangle(); // Run initial calc
+        });
+
+        // --- TAB NAVIGATION ---
+        function switchTab(tab) {
+            ['quiz', 'tool', 'summary'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`nav-${t}-btn`).classList.remove('bg-blue-600', 'text-white');
+                document.getElementById(`nav-${t}-btn`).classList.add('text-slate-400');
+            });
+
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('flex');
+            document.getElementById(`nav-${tab}-btn`).classList.add('bg-blue-600', 'text-white');
+            document.getElementById(`nav-${tab}-btn`).classList.remove('text-slate-400');
+        }
+
+        // --- QUIZ LOGIC ---
+        function setMode(mode) {
+            quizMode = mode;
+            document.getElementById('mode-study').className = mode === 'study' ? 
+                "flex-1 py-1 text-xs font-bold rounded-lg transition-all bg-blue-500/20 text-blue-300 border border-blue-500/30" : 
+                "flex-1 py-1 text-xs font-bold rounded-lg text-slate-400 transition-all hover:text-slate-200";
+            
+            document.getElementById('mode-exam').className = mode === 'exam' ? 
+                "flex-1 py-1 text-xs font-bold rounded-lg transition-all bg-blue-500/20 text-blue-300 border border-blue-500/30" : 
+                "flex-1 py-1 text-xs font-bold rounded-lg text-slate-400 transition-all hover:text-slate-200";
+
+            renderQuestion();
+        }
+
+        function filterCategory(cat) {
+            if (cat === 'all') {
+                currentFilteredQuestions = [...ALL_QUESTIONS];
+            } else {
+                currentFilteredQuestions = ALL_QUESTIONS.filter(q => q.category === cat);
+            }
+            currentIndex = 0;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            if (currentFilteredQuestions.length === 0) return;
+
+            const q = currentFilteredQuestions[currentIndex];
+            
+            document.getElementById('question-number-badge').innerText = `Question ${currentIndex + 1} of ${currentFilteredQuestions.length}`;
+            document.getElementById('competency-tag').innerText = q.competencyTag;
+            document.getElementById('question-text').innerText = q.question;
+
+            const isBookmarked = bookmarked.has(q.id);
+            document.getElementById('bookmark-btn').innerHTML = isBookmarked ? 
+                `<i class="fa-solid fa-bookmark text-amber-400"></i> Saved` : 
+                `<i class="fa-regular fa-bookmark"></i> Save Question`;
+
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('explanation-box').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const hasAnswered = userAnswers.hasOwnProperty(q.id);
+            const selectedOpt = userAnswers[q.id];
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border transition-all flex items-start gap-3.5 group relative font-medium text-sm ";
+                
+                let letterBadgeClass = "w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 border ";
+
+                if (!hasAnswered) {
+                    btn.className += "bg-slate-950 border-slate-800 hover:border-blue-500/50 hover:bg-slate-900 text-slate-200";
+                    letterBadgeClass += "bg-slate-900 border-slate-700 text-slate-400 group-hover:border-blue-500/50 group-hover:text-blue-400";
+                } else {
+                    if (idx === q.correctIndex) {
+                        btn.className += "bg-blue-950/40 border-blue-500/60 text-blue-200 font-semibold";
+                        letterBadgeClass += "bg-blue-500 border-blue-400 text-slate-950 font-black";
+                    } else if (idx === selectedOpt) {
+                        btn.className += "bg-rose-950/40 border-rose-500/60 text-rose-200";
+                        letterBadgeClass += "bg-rose-500 border-rose-400 text-white font-black";
+                    } else {
+                        btn.className += "bg-slate-950/50 border-slate-800/60 text-slate-500 opacity-60";
+                        letterBadgeClass += "bg-slate-900 border-slate-800 text-slate-600";
+                    }
+                }
+
+                const letters = ['A', 'B', 'C', 'D'];
+                btn.innerHTML = `
+                    <span class="${letterBadgeClass}">${letters[idx]}</span>
+                    <span class="leading-snug mt-0.5">${optText}</span>
+                `;
+
+                if (!hasAnswered || quizMode === 'exam') {
+                    btn.onclick = () => selectOption(idx);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            if (hasAnswered && (quizMode === 'study' || currentIndex === currentFilteredQuestions.length - 1)) {
+                showExplanation(q);
+            }
+
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            if (currentIndex === currentFilteredQuestions.length - 1) {
+                document.getElementById('next-btn').innerHTML = `Finish <i class="fa-solid fa-flag-checkered"></i>`;
+            } else {
+                document.getElementById('next-btn').innerHTML = `Next <i class="fa-solid fa-arrow-right"></i>`;
+            }
+
+            updateScoreDisplay();
+        }
+
+        function selectOption(index) {
+            const q = currentFilteredQuestions[currentIndex];
+            if (userAnswers.hasOwnProperty(q.id)) return;
+
+            userAnswers[q.id] = index;
+
+            if (index === q.correctIndex) {
+                score++;
+                streak++;
+                if (streak > maxStreak) maxStreak = streak;
+            } else {
+                streak = 0;
+            }
+
+            renderQuestion();
+        }
+
+        function showHint() {
+            const q = currentFilteredQuestions[currentIndex];
+            document.getElementById('hint-text').innerText = q.hint;
+            document.getElementById('hint-box').classList.remove('hidden');
+        }
+
+        function showExplanation(q) {
+            document.getElementById('explanation-text').innerText = q.explanation;
+            document.getElementById('explanation-box').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIndex < currentFilteredQuestions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            } else {
+                showResultsModal();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function toggleBookmark() {
+            const q = currentFilteredQuestions[currentIndex];
+            if (bookmarked.has(q.id)) {
+                bookmarked.delete(q.id);
+            } else {
+                bookmarked.add(q.id);
+            }
+            renderQuestion();
+        }
+
+        function updateScoreDisplay() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const pct = answeredCount > 0 ? Math.round((score / answeredCount) * 100) : 0;
+            document.getElementById('score-text').innerHTML = `${score} / ${answeredCount} <span class="text-xs text-slate-400 font-normal">(${pct}%)</span>`;
+            document.getElementById('streak-badge').innerHTML = `🔥 ${streak}`;
+        }
+
+        function showResultsModal() {
+            document.getElementById('quiz-card-wrapper').classList.add('hidden');
+            const modal = document.getElementById('results-modal');
+            modal.classList.remove('hidden');
+
+            const total = currentFilteredQuestions.length;
+            const pct = total > 0 ? Math.round((score / total) * 100) : 0;
+
+            document.getElementById('final-score-val').innerText = `${pct}%`;
+            document.getElementById('final-correct-val').innerText = `${score} / ${total}`;
+            document.getElementById('final-streak-val').innerText = `${maxStreak} 🔥`;
+        }
+
+        function restartQuiz() {
+            userAnswers = {};
+            score = 0;
+            streak = 0;
+            currentIndex = 0;
+            document.getElementById('results-modal').classList.add('hidden');
+            document.getElementById('quiz-card-wrapper').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        // --- MATH TOOL LOGIC ---
+        function calculateTriangle() {
+            let b = parseFloat(document.getElementById('calc-b').value);
+            let c = parseFloat(document.getElementById('calc-c').value);
+            let A = parseFloat(document.getElementById('calc-angleA').value);
+
+            if (isNaN(b) || isNaN(c) || isNaN(A)) {
+                document.getElementById('calc-result').innerText = "Err";
+                return;
+            }
+
+            // Cosine takes radians in JS
+            let radA = A * (Math.PI / 180);
+            let cosA = Math.cos(radA);
+            
+            let aSq = (b * b) + (c * c) - (2 * b * c * cosA);
+            let a = Math.sqrt(aSq);
+
+            document.getElementById('calc-result').innerText = a.toFixed(2);
+
+            document.getElementById('calc-steps').innerHTML = `
+                a² = ${b}² + ${c}² - 2(${b})(${c})cos(${A}°)<br>
+                a² = ${b*b} + ${c*c} - ${(2*b*c)}(${cosA.toFixed(4)})<br>
+                a² = ${(b*b + c*c)} - ${((2*b*c)*cosA).toFixed(3)}<br>
+                a² = ${aSq.toFixed(3)}<br>
+                a ≈ <strong>${a.toFixed(2)}</strong>
+            `;
+        }
+    </script>
+</body>
+</html>
