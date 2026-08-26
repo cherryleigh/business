@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Club Reviewer - Grade 10 Mathematics</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #2563eb;
+            --accent-color: #d97706;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-color: #0f172a;
+            --border-color: #e2e8f0;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --correct-color: #16a34a;
+            --incorrect-color: #dc2626;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 24px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        header h1 {
+            margin: 0 0 8px 0;
+            font-size: 2.2rem;
+        }
+
+        header p {
+            margin: 4px 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: 2px solid var(--primary-color);
+            background-color: var(--card-background);
+            color: var(--primary-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .tab-btn:hover {
+            background-color: #eff6ff;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Card Sections */
+        .section-card {
+            background: var(--card-background);
+            padding: 24px;
+            margin-bottom: 24px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin-top: 20px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .formula-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--secondary-color);
+            padding: 12px 16px;
+            margin: 15px 0;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 1.05rem;
+        }
+
+        .remember-box {
+            background-color: #fef3c7;
+            border-left: 4px solid var(--accent-color);
+            padding: 12px 16px;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+        }
+
+        /* Practice Quiz Styles */
+        .question-block {
+            background: #f8fafc;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .question-title {
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+        }
+
+        .options-group label {
+            display: block;
+            background: white;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .options-group label:hover {
+            background: #f1f5f9;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            margin-top: 8px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .result-msg {
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .result-msg.correct {
+            color: var(--correct-color);
+        }
+
+        .result-msg.incorrect {
+            color: var(--incorrect-color);
+        }
+
+        .answer-key-card {
+            display: none;
+            background: #f0fdf4;
+            border: 2px solid var(--correct-color);
+        }
+
+        .score-box {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .explanation {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>MATH CLUB REVIEWER - GRADE 10 MATHEMATICS</h1>
+        <p><strong>Contributors:</strong> Khristein Giahn M. Papa, Jhiliane Leigh B. Tagupa, Sofia Leigh S. Isidro, Angelica R. Galanta, Kashieca Kaye P. Renoballes, Quillan Zayx B. Sarmiento (STE 10 - Zeal)</p>
+    </header>
+
+    <!-- Header Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('textReviewer')">📖 1. Text Reviewer</button>
+        <button class="tab-btn" onclick="switchTab('practiceQuiz')">✏️ 2. Question & Answer Practice</button>
+    </div>
+
+    <!-- SECTION 1: TEXT REVIEWER -->
+    <div id="textReviewer" class="tab-content active">
+
+        <div class="section-card">
+            <h2>1. Applying the Law of Cosines in Solving Oblique Triangles</h2>
+            <p>An <strong>oblique triangle</strong> is a triangle that does not have a 90° right angle. It can be:</p>
+            <ul>
+                <li><strong>Acute triangle:</strong> All angles are less than 90°.</li>
+                <li><strong>Obtuse triangle:</strong> One angle is greater than 90°.</li>
+            </ul>
+            
+            <h3>Law of Cosines Formulas</h3>
+            <div class="formula-box">
+                a² = b² + c² - 2bc cos A<br>
+                b² = a² + c² - 2ac cos B<br>
+                c² = a² + b² - 2ab cos C
+            </div>
+
+            <div class="remember-box">
+                <strong>REMEMBER!</strong> Lowercase letters represent side lengths, and uppercase letters represent their opposite angles (e.g., side <i>a</i> is opposite Angle <i>A</i>).
+            </div>
+
+            <h3>When to Use the Law of Cosines?</h3>
+            <ul>
+                <li><strong>SAS (Side-Angle-Side):</strong> When you know two sides and the included angle between them. Used to find the missing side.</li>
+                <li><strong>SSS (Side-Side-Side):</strong> When you know all three sides. Used to find a missing angle.</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h2>2. Solving Quadratic Inequalities in One Variable</h2>
+            <p>A quadratic inequality contains a variable raised to the second power (e.g., x² + 3x - 4 > 0, x² - 5x + 6 ≤ 0).</p>
+            
+            <h3>Interval Notation Rules</h3>
+            <ul>
+                <li><strong>Parentheses ( ):</strong> Used with &lt; or &gt; (Endpoint is <strong>NOT included</strong>). Example: x &gt; 3 → (3, ∞)</li>
+                <li><strong>Brackets [ ]:</strong> Used with ≤ or ≥ (Endpoint <strong>IS included</strong>). Example: x ≥ 3 → [3, ∞)</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h2>3. Solving Quadratic Inequalities in Two Variables</h2>
+            <p>Standard forms: y &gt; ax² + bx + c, y ≥ ax² + bx + c, y &lt; ax² + bx + c, or y ≤ ax² + bx + c (where a ≠ 0). Solutions form an infinite set of ordered pairs (x, y) represented as a shaded region.</p>
+
+            <h3>4-Step Procedure</h3>
+            <ol>
+                <li><strong>Key Features of Parabola:</strong> Determine orientation (a &gt; 0 opens up, a &lt; 0 opens down), vertex h = -b/(2a), x-intercepts (y = 0), and y-intercept (0, c).</li>
+                <li><strong>Draw Boundary Curve:</strong> Use a <em>dashed line</em> for strict inequalities (&lt; or &gt;) and a <em>solid line</em> for non-strict inequalities (≤ or ≥).</li>
+                <li><strong>Select a Test Point:</strong> Pick a point not on the curve (usually (0,0)) and test it in the inequality.</li>
+                <li><strong>Shade the Region:</strong> If the test point yields a true statement, shade the region containing it; otherwise, shade the opposite region.</li>
+            </ol>
+        </div>
+
+        <div class="section-card">
+            <h2>4. Determining the Region of Solutions (Linear vs. Quadratic)</h2>
+            <p>Evaluating boundary curves and shaded regions for linear and quadratic inequalities:</p>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Strict (&lt; or &gt;)</th>
+                    <th>Non-Strict (≤ or ≥)</th>
+                </tr>
+                <tr>
+                    <th>Boundary Line/Curve</th>
+                    <td>Dashed Line (Points NOT included)</td>
+                    <td>Solid Line (Points ARE included)</td>
+                </tr>
+                <tr>
+                    <th>Linear Shading</th>
+                    <td>&gt; Shade Above | &lt; Shade Below</td>
+                    <td>≥ Shade Above | ≤ Shade Below</td>
+                </tr>
+                <tr>
+                    <th>Quadratic Shading (a &gt; 0)</th>
+                    <td>&gt; Shade Inside/Above | &lt; Shade Outside/Below</td>
+                    <td>≥ Shade Inside/Above | ≤ Shade Outside/Below</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section-card">
+            <h2>5. Absolute Value Equations in One Variable</h2>
+            <p>Absolute value represents the distance of a number from 0 on a number line.</p>
+            <div class="formula-box">
+                Rule: If |x| = a, then x = a OR x = -a
+            </div>
+            <p>Example: |x| = 5 → Solution set: {-5, 5}</p>
+        </div>
+
+        <div class="section-card">
+            <h2>6. Absolute Value Inequalities in One Variable</h2>
+            <ul>
+                <li><strong>Less Than (&lt; or ≤):</strong> |x| &lt; a → -a &lt; x &lt; a <em>(BETWEEN / AND statement)</em></li>
+                <li><strong>Greater Than (&gt; or ≥):</strong> |x| &gt; a → x &lt; -a OR x &gt; a <em>(OUTSIDE / OR statement)</em></li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h2>7. Measures of Position (Quartiles, Deciles, Percentiles)</h2>
+            <p>Measures of position state where a value is located in an ordered dataset.</p>
+            <ul>
+                <li><strong>Quartiles (Q):</strong> Divide data into 4 equal parts. Position formula: Q<sub>k</sub> = k(n + 1) / 4</li>
+                <li><strong>Deciles (D):</strong> Divide data into 10 equal parts. Position formula: D<sub>k</sub> = k(n + 1) / 10</li>
+                <li><strong>Percentiles (P):</strong> Divide data into 100 equal parts. Position formula: P<sub>k</sub> = k(n + 1) / 100</li>
+            </ul>
+            <div class="remember-box">
+                <strong>Equivalences:</strong> Q1 = P25 | Q2 = D5 = P50 (Median) | Q3 = P75
+            </div>
+
+            <h3>Interpolation & Outliers</h3>
+            <p><strong>Interpolation Formula:</strong> Value = [(Larger - Smaller) × decimal] + Smaller</p>
+            <p><strong>Interquartile Range (IQR):</strong> IQR = Q3 - Q1</p>
+            <p><strong>Outlier Fences:</strong> Lower Fence = Q1 - 1.5(IQR) | Upper Fence = Q3 + 1.5(IQR)</p>
+        </div>
+
+        <div class="section-card">
+            <h2>8. Box-and-Whisker Plots & Cumulative Frequency</h2>
+            <p><strong>Five-Number Summary:</strong> Minimum, Q1, Median (Q2), Q3, Maximum.</p>
+            <p><strong>Cumulative Frequency:</strong> Running total of frequencies. The last cumulative frequency equals total sample size (n).</p>
+            <p><strong>Ogive:</strong> A line graph plotted using upper class boundaries and cumulative frequencies.</p>
+        </div>
+
+        <div class="section-card">
+            <h2>9. Drawing Conclusions from Statistical Data</h2>
+            <p>Percentile rank measures relative position, not percentage of correct items. A student at the 80th percentile scored higher than or equal to roughly 80% of all participants.</p>
+        </div>
+
+    </div>
+
+
+    <!-- SECTION 2: PRACTICE QUIZ -->
+    <div id="practiceQuiz" class="tab-content">
+        <form id="quizForm">
+
+            <div class="section-card">
+                <h2>Practice Questions</h2>
+
+                <!-- Q1 -->
+                <div class="question-block">
+                    <div class="question-title">1. Which formula represents the Law of Cosines when solving for side 'a'?</div>
+                    <div class="options-group">
+                        <label><input type="radio" name="q1" value="A"> A. a² = b² + c² - 2bc cos A</label>
+                        <label><input type="radio" name="q1" value="B"> B. a² = b² + c² + 2bc cos A</label>
+                        <label><input type="radio" name="q1" value="C"> C. a² = b² - c² - 2bc cos A</label>
+                    </div>
+                    <div id="res1" class="result-msg"></div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="question-block">
+                    <div class="question-title">2. Under which condition should you use the Law of Cosines to solve an oblique triangle?</div>
+                    <div class="options-group">
+                        <label><input type="radio" name="q2" value="A"> A. AAA (Angle-Angle-Angle)</label>
+                        <label><input type="radio" name="q2" value="B"> B. SAS (Side-Angle-Side) or SSS (Side-Side-Side)</label>
+                        <label><input type="radio" name="q2" value="C"> C. Right triangles only</label>
+                    </div>
+                    <div id="res2" class="result-msg"></div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="question-block">
+                    <div class="question-title">3. What interval notation is used for x ≥ 3?</div>
+                    <div class="options-group">
+                        <label><input type="radio" name="q3" value="A"> A. (3, ∞)</label>
+                        <label><input type="radio" name="q3" value="B"> B. [3, ∞)</label>
+                        <label><input type="radio" name="q3" value="C"> C. (3, ∞]</label>
+                    </div>
+                    <div id="res3" class="result-msg"></div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="question-block">
+                    <div class="question-title">4. What type of boundary line should be drawn for strict inequalities such as y > ax² + bx + c?</div>
+                    <div class="options-group">
+                        <label><input type="radio" name="q4" value="A"> A. Solid line</label>
+                        <label><input type="radio" name="q4" value="B"> B. Dashed line</label>
+                        <label><input type="radio" name="q4" value="C"> C. Dotted double line</label>
+                    </div>
+                    <div id="res4" class="result-msg"></div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="question-block">
+                    <div class="question-title">5. What are the solutions to the absolute value equation |x| = 7?</div>
+                    <input type="text" id="q5" placeholder="Type solution set (e.g., -7, 7)...">
+                    <div id="res5" class="result-msg"></div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="question-block">
+                    <div class="question-title">6. Which measure of position is equivalent to the Median (Q2)?</div>
+                    <div class="options-group">
+                        <label><input type="radio" name="q6" value="A"> A. D5 and P50</label>
+                        <label><input type="radio" name="q6" value="B"> B. D2 and P25</label>
+                        <label><input type="radio" name="q6" value="C"> C. Q1 and P75</label>
+                    </div>
+                    <div id="res6" class="result-msg"></div>
+                </div>
+
+                <!-- Q7 -->
+                <div class="question-block">
+                    <div class="question-title">7. If Q1 = 8 and Q3 = 18, what is the Interquartile Range (IQR)?</div>
+                    <input type="text" id="q7" placeholder="Type numerical answer...">
+                    <div id="res7" class="result-msg"></div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="question-block">
+                    <div class="question-title">8. What 5 numbers make up the summary in a Box-and-Whisker Plot?</div>
+                    <div class="options-group">
+                        <label><input type="radio" name="q8" value="A"> A. Mean, Median, Mode, Range, IQR</label>
+                        <label><input type="radio" name="q8" value="B"> B. Minimum, Q1, Median (Q2), Q3, Maximum</label>
+                        <label><input type="radio" name="q8" value="C"> C. D1, Q1, Median, Q3, D9</label>
+                    </div>
+                    <div id="res8" class="result-msg"></div>
+                </div>
+
+                <button type="button" class="submit-btn" onclick="checkAnswers()">Submit & View Answers</button>
+            </div>
+        </form>
+
+        <!-- Answer Key Card -->
+        <div id="answerKeyCard" class="section-card answer-key-card">
+            <h2>Answer Key & Solutions</h2>
+            <div id="scoreBox" class="score-box"></div>
+
+            <p><strong>1. A</strong> — Law of Cosines formula for side a is a² = b² + c² - 2bc cos A.</p>
+            <p><strong>2. B</strong> — Law of Cosines is used when given SAS or SSS conditions.</p>
+            <p><strong>3. B</strong> — Brackets [ ] are used when the endpoint is included (≥ or ≤).</p>
+            <p><strong>4. B</strong> — Strict inequalities (&lt; or &gt;) use a dashed boundary line.</p>
+            <p><strong>5. -7, 7</strong> — Absolute value |x| = 7 gives x = 7 or x = -7.</p>
+            <p><strong>6. A</strong> — The 5th decile (D5) and 50th percentile (P50) equal the Median (Q2).</p>
+            <p><strong>7. 10</strong> — IQR = Q3 - Q1 = 18 - 8 = 10.</p>
+            <p><strong>8. B</strong> — The five-number summary consists of Min, Q1, Median, Q3, and Max.</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        const total = 8;
+
+        // Q1
+        const q1 = document.querySelector('input[name="q1"]:checked')?.value;
+        if (q1 === 'A') { score++; setRes('res1', true); } else { setRes('res1', false); }
+
+        // Q2
+        const q2 = document.querySelector('input[name="q2"]:checked')?.value;
+        if (q2 === 'B') { score++; setRes('res2', true); } else { setRes('res2', false); }
+
+        // Q3
+        const q3 = document.querySelector('input[name="q3"]:checked')?.value;
+        if (q3 === 'B') { score++; setRes('res3', true); } else { setRes('res3', false); }
+
+        // Q4
+        const q4 = document.querySelector('input[name="q4"]:checked')?.value;
+        if (q4 === 'B') { score++; setRes('res4', true); } else { setRes('res4', false); }
+
+        // Q5
+        const q5 = document.getElementById('q5').value.trim().toLowerCase();
+        if (q5.includes('-7') && q5.includes('7')) { score++; setRes('res5', true); } else { setRes('res5', false); }
+
+        // Q6
+        const q6 = document.querySelector('input[name="q6"]:checked')?.value;
+        if (q6 === 'A') { score++; setRes('res6', true); } else { setRes('res6', false); }
+
+        // Q7
+        const q7 = document.getElementById('q7').value.trim();
+        if (q7 === '10') { score++; setRes('res7', true); } else { setRes('res7', false); }
+
+        // Q8
+        const q8 = document.querySelector('input[name="q8"]:checked')?.value;
+        if (q8 === 'B') { score++; setRes('res8', true); } else { setRes('res8', false); }
+
+        // Show Score
+        const answerCard = document.getElementById('answerKeyCard');
+        document.getElementById('scoreBox').textContent = `Your Score: ${score} / ${total}`;
+        answerCard.style.display = 'block';
+        answerCard.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function setRes(id, isCorrect) {
+        const el = document.getElementById(id);
+        if (isCorrect) {
+            el.textContent = '✓ Correct';
+            el.className = 'result-msg correct';
+        } else {
+            el.textContent = '✗ Incorrect';
+            el.className = 'result-msg incorrect';
+        }
+    }
+</script>
+
+</body>
+</html>
