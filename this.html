@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Club G10 Reviewer - Interactive Masterclass</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for Math formatting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="initKaTeX();"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        book: {
+                            page: '#0f172a',
+                            border: '#1e293b',
+                            accent: '#38bdf8',
+                            rose: '#fb7185'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        .book-shadow {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.1);
+        }
+        .page-enter {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans overflow-x-hidden bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-900">
+
+    <!-- Top Navigation & Book Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+            
+            <!-- Book Logo & Title -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-500 flex items-center justify-center text-white text-lg font-bold shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-lg text-slate-100 tracking-wide">Math Club G10 Reviewer</h1>
+                    <p class="text-xs text-slate-400">STE 10 - Zeal • Interactive Mathematics Reader</p>
+                </div>
+            </div>
+
+            <!-- Reading Progress Bar & Chapter Quick Selector -->
+            <div class="hidden md:flex items-center gap-4 flex-1 max-w-xs mx-4">
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
+                    <div id="reading-progress-bar" class="bg-gradient-to-r from-cyan-400 to-indigo-400 h-full w-[8.3%] transition-all duration-300"></div>
+                </div>
+                <span id="page-counter-badge" class="text-xs font-mono font-bold text-cyan-400 whitespace-nowrap">Page 1 / 12</span>
+            </div>
+
+            <!-- Table of Contents Toggle Button -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleTOC()" class="px-3.5 py-2 rounded-xl bg-slate-800 text-slate-200 hover:bg-slate-700 text-xs font-bold transition flex items-center gap-2 border border-slate-700">
+                    <i class="fa-solid fa-list-ul text-cyan-400"></i>
+                    <span>Modules</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Slide-out Table of Contents Drawer -->
+    <div id="toc-drawer" class="fixed inset-y-0 right-0 w-80 bg-slate-900 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+            <h3 class="font-display font-bold text-base text-slate-100 flex items-center gap-2">
+                <i class="fa-solid fa-bookmark text-cyan-400"></i> Table of Contents
+            </h3>
+            <button onclick="toggleTOC()" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="p-4 flex-1 overflow-y-auto custom-scrollbar space-y-2" id="toc-list">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+    <div id="toc-backdrop" onclick="toggleTOC()" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-40 hidden"></div>
+
+    <!-- Main Book Stage -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between">
+        
+        <!-- Book Page Container -->
+        <div id="book-page-wrapper" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 book-shadow relative min-h-[580px] flex flex-col justify-between overflow-hidden">
+            
+            <!-- Page Ambient Lighting Accent -->
+            <div id="page-theme-glow" class="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Dynamic Page Content (Injected by JS) -->
+            <div id="page-content" class="page-enter space-y-6">
+                <!-- Page body will be rendered here -->
+            </div>
+
+            <!-- Book Page Bottom Bar (Chapter Navigation Controls) -->
+            <div class="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                <button id="btn-prev" onclick="changePage(-1)" class="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white font-bold text-xs transition flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-chevron-left"></i> Previous Module
+                </button>
+
+                <div class="flex items-center gap-1 overflow-x-auto max-w-[200px] sm:max-w-none px-2" id="page-dots-container">
+                    <!-- Page Dots Injected Here -->
+                </div>
+
+                <button id="btn-next" onclick="changePage(1)" class="px-5 py-2.5 rounded-xl bg-cyan-600 text-white hover:bg-cyan-500 font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-cyan-600/30">
+                    Next Module <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-3 text-center text-xs text-slate-500 border-t border-slate-900">
+        Math Club Grade 10 Reviewer • Contributed by STE 10 - Zeal • Interactive Learning System
+    </footer>
+
+    <!-- Book Data Script -->
+    <script>
+        const pagesData = [
+            {
+                chapterNum: 1,
+                title: "Welcome & Contributors",
+                subtitle: "Math Club Grade 10 Comprehensive Reviewer",
+                type: "Overview",
+                badge: "Credits & Info",
+                color: "cyan",
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-cyan-950/40 border border-cyan-500/30 rounded-2xl p-5 flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl shrink-0 font-bold border border-cyan-500/30">
+                                📐
+                            </div>
+                            <div>
+                                <h3 class="font-display font-bold text-lg text-cyan-300">Grade 10 Mathematics Interactive Reviewer</h3>
+                                <p class="text-xs text-slate-300 leading-relaxed mt-1">
+                                    Welcome to the interactive Math Club Grade 10 Reviewer! This interactive reader is designed to help you master core Grade 10 concepts including Trigonometry, Quadratic & Absolute Value Inequalities, and Statistics.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Contributors Section -->
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
+                            <h4 class="font-display font-bold text-sm uppercase text-cyan-300 tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-users text-cyan-400"></i> Contributors (STE 10 - Zeal)
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">KP</div>
+                                    <span class="text-xs font-semibold text-slate-200">Khristein Giahn M. Papa</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">JT</div>
+                                    <span class="text-xs font-semibold text-slate-200">Jhiliane Leigh B. Tagupa</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">SI</div>
+                                    <span class="text-xs font-semibold text-slate-200">Sofia Leigh S. Isidro</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">AG</div>
+                                    <span class="text-xs font-semibold text-slate-200">Angelica R. Galanta</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">KR</div>
+                                    <span class="text-xs font-semibold text-slate-200">Kashieca Kaye P. Renoballes</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">QS</div>
+                                    <span class="text-xs font-semibold text-slate-200">Quillan Zayx B. Sarmiento</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Guide Navigation Box -->
+                        <div class="bg-slate-950 border border-cyan-500/30 rounded-2xl p-4">
+                            <h4 class="font-display font-bold text-xs uppercase text-slate-400 tracking-wider mb-2">
+                                <i class="fa-solid fa-compass text-cyan-400 mr-1.5"></i> Reviewer Modules Overview:
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Use the <strong>Next Module</strong> button or open the <strong>Modules Drawer</strong> to navigate through detailed study concepts, step-by-step problem solutions, real-world applications, and the interactive Knowledge Challenge Quiz!
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 2,
+                title: "1. Law of Cosines & Oblique Triangles",
+                subtitle: "Trigonometry • SAS and SSS Triangle Cases",
+                type: "Study Reviewer",
+                badge: "Trigonometry",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "Which triangle case requires using the Law of Cosines to solve for an unknown side?",
+                        options: ["Side-Angle-Side (SAS)", "Angle-Side-Angle (ASA)"],
+                        correct: 0,
+                        explanation: "SAS gives two sides and the included angle between them, making the Law of Cosines ideal for finding the third missing side."
+                    },
+                    {
+                        question: "What type of triangle is an oblique triangle?",
+                        options: ["A triangle with one 90° right angle", "A triangle with NO 90° right angle"],
+                        correct: 1,
+                        explanation: "An oblique triangle does not contain a right angle (90°); it is either acute (all angles < 90°) or obtuse (one angle > 90°)."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h3 class="font-display font-bold text-base text-cyan-300 flex items-center gap-2">
+                                <i class="fa-solid fa-shapes"></i> Oblique Triangles
+                            </h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                An <strong>oblique triangle</strong> is any triangle that does not contain a right angle ($90^\circ$).
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-cyan-400 block mb-1">Acute Triangle</strong>
+                                    <span class="text-slate-300">All three interior angles are less than $90^\circ$.</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-amber-400 block mb-1">Obtuse Triangle</strong>
+                                    <span class="text-slate-300">One interior angle is greater than $90^\circ$.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulas Box -->
+                        <div class="bg-slate-950 border border-indigo-500/40 rounded-2xl p-5 space-y-4">
+                            <h4 class="font-display font-bold text-sm text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-square-root-variable text-indigo-400"></i> Law of Cosines Formulas
+                            </h4>
+                            <p class="text-xs text-slate-300">
+                                Note: Lowercase letters ($a, b, c$) represent side lengths, and uppercase letters ($A, B, C$) represent opposite angles ($A \leftrightarrow a, B \leftrightarrow b, C \leftrightarrow c$).
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs text-center">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-cyan-300">
+                                    $$a^2 = b^2 + c^2 - 2bc \cos A$$
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-cyan-300">
+                                    $$b^2 = a^2 + c^2 - 2ac \cos B$$
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-cyan-300">
+                                    $$c^2 = a^2 + b^2 - 2ab \cos C$$
+                                </div>
+                            </div>
+                            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-slate-300">
+                                <strong class="text-indigo-300">When to apply:</strong>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-slate-400">
+                                    <li><strong>SAS (Side-Angle-Side):</strong> Known 2 sides and the included angle $\rightarrow$ find missing side.</li>
+                                    <li><strong>SSS (Side-Side-Side):</strong> Known all 3 sides $\rightarrow$ find a missing angle.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 3,
+                title: "2. Quadratic Inequalities in One Variable",
+                subtitle: "Algebra • Symbols, Notations & Interval Bounds",
+                type: "Study Reviewer",
+                badge: "Algebra",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "Which interval notation is used for non-strict inequalities ($\le$ or $\ge$)?",
+                        options: ["Parentheses ( )", "Brackets [ ]"],
+                        correct: 1,
+                        explanation: "Brackets [ ] indicate that boundary endpoints are included in the solution set."
+                    },
+                    {
+                        question: "How is $x > 3$ expressed in interval notation?",
+                        options: ["(3, ∞)", "[3, ∞)"],
+                        correct: 0,
+                        explanation: "Strict inequality '>' does not include 3, so a parenthesis is used: (3, ∞)."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h3 class="font-display font-bold text-base text-cyan-300">Understanding One-Variable Quadratic Inequalities</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                A quadratic inequality in one variable contains a variable raised to the second power ($x^2$).
+                            </p>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs font-mono text-cyan-400 flex flex-wrap gap-4 justify-center">
+                                <span>x^2 + 3x - 4 > 0</span>
+                                <span>x^2 - 5x + 6 \le 0</span>
+                                <span>2x^2 + x - 3 \ge 0</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-2">
+                                <span class="text-xs font-bold text-amber-400 block uppercase">Parentheses ( )</span>
+                                <p class="text-xs text-slate-300">Endpoint is <strong>NOT included</strong>.</p>
+                                <p class="text-xs text-slate-400">Used for strict inequalities ($<$ or $>$).</p>
+                                <div class="p-2 bg-slate-900 rounded-lg text-xs font-mono text-slate-200 border border-slate-800">
+                                    x > 3 \rightarrow (3, \infty)
+                                </div>
+                            </div>
+                            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-2">
+                                <span class="text-xs font-bold text-emerald-400 block uppercase">Brackets [ ]</span>
+                                <p class="text-xs text-slate-300">Endpoint <strong>IS included</strong>.</p>
+                                <p class="text-xs text-slate-400">Used for non-strict inequalities ($\le$ or $\ge$).</p>
+                                <div class="p-2 bg-slate-900 rounded-lg text-xs font-mono text-slate-200 border border-slate-800">
+                                    x \ge 3 \rightarrow [3, \infty)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 4,
+                title: "3 & 4. Quadratic & Linear Inequalities in Two Variables",
+                subtitle: "Graphing Curves, Test Points & Solution Regions",
+                type: "Study Reviewer",
+                badge: "Graphing & Systems",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "What boundary line style should be drawn for $y > ax^2 + bx + c$?",
+                        options: ["Solid curve", "Dashed curve"],
+                        correct: 1,
+                        explanation: "Strict inequalities ('>' or '<') use dashed boundary curves because points on the line/parabola are not included."
+                    },
+                    {
+                        question: "In a system of inequalities, where is the solution set located?",
+                        options: ["The overlapping region of all shaded areas", "Any region shaded by at least one inequality"],
+                        correct: 0,
+                        explanation: "The solution set of a system consists of all points that satisfy ALL inequalities simultaneously (the overlapping shaded region)."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h3 class="font-display font-bold text-base text-cyan-300">4-Step Procedure for Two-Variable Inequalities</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Standard forms: $y > ax^2 + bx + c$, $y \ge ax^2 + bx + c$, $y < ax^2 + bx + c$, $y \le ax^2 + bx + c$ ($a \neq 0$).
+                            </p>
+                            <ol class="space-y-2 text-xs text-slate-300">
+                                <li class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-amber-400">1. Key Features:</strong> Determine parabola orientation ($a > 0$ opens up, $a < 0$ opens down), vertex $(h, k)$ where $h = -\frac{b}{2a}$, y-intercept $(0, c)$, and x-intercepts ($y = 0$).
+                                </li>
+                                <li class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-indigo-400">2. Boundary Curve:</strong> Draw <strong>dashed</strong> for strict ($<$ or $>$) or <strong>solid</strong> for non-strict ($\le$ or $\ge$).
+                                </li>
+                                <li class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-cyan-400">3. Test Point:</strong> Test a point not on the curve (e.g. $(0,0)$) in the original inequality.
+                                </li>
+                                <li class="p-2.5 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-emerald-400">4. Shading Region:</strong> Shade region with test point if true; opposite region if false.
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3">
+                            <h4 class="font-display font-bold text-xs uppercase text-slate-400">Quick Shading Reference Guide:</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <span class="font-bold text-cyan-300 block">Linear Inequalities</span>
+                                    <span class="text-slate-400">$y >$ or $y \ge$: Shade ABOVE line.<br>$y <$ or $y \le$: Shade BELOW line.</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <span class="font-bold text-cyan-300 block">Quadratic Inequalities (a > 0)</span>
+                                    <span class="text-slate-400">$y >$ or $y \ge$: Shade ABOVE / INSIDE.<br>$y <$ or $y \le$: Shade BELOW / OUTSIDE.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 5,
+                title: "5 & 6. Absolute Value Equations & Inequalities",
+                subtitle: "Distance Concepts • AND vs. OR Rules",
+                type: "Study Reviewer",
+                badge: "Absolute Value",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "What two equations are formed from $|x| = a$ (where $a > 0$)?",
+                        options: ["x = a OR x = -a", "x = a AND x = 0"],
+                        correct: 0,
+                        explanation: "Absolute value represents distance from 0, so $|x| = a$ means $x$ can be $a$ units in either direction ($x = a$ or $x = -a$)."
+                    },
+                    {
+                        question: "Which rule applies to $|x| > a$?",
+                        options: ["-a < x < a (AND / Between)", "x < -a OR x > a (OR / Outside)"],
+                        correct: 1,
+                        explanation: "Greater than inequalities generate an 'OR' statement, pointing outward to $(-\infty, -a) \cup (a, \infty)$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h3 class="font-display font-bold text-base text-cyan-300">Absolute Value Equations</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Absolute value represents the magnitude/distance of a number from zero on the number line.
+                            </p>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs text-slate-200">
+                                <strong class="text-cyan-400">Rule:</strong> If $|x| = a$, then $x = a$ OR $x = -a$.<br>
+                                <span class="text-slate-400">Example: $|x| = 5 \rightarrow x = 5$ OR $x = -5$. Solution Set: $\{-5, 5\}$.</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="bg-slate-950 border border-indigo-500/40 rounded-2xl p-4 space-y-3">
+                                <span class="text-xs font-bold text-indigo-400 block uppercase">Less Than (AND / Between)</span>
+                                <div class="p-2 bg-slate-900 rounded-lg text-xs font-mono text-cyan-300 border border-slate-800">
+                                    |x| < a \rightarrow -a < x < a
+                                </div>
+                                <p class="text-xs text-slate-300">
+                                    Example: $|x| < 5 \rightarrow -5 < x < 5$<br>
+                                    <strong>Interval:</strong> $(-5, 5)$
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-950 border border-rose-500/40 rounded-2xl p-4 space-y-3">
+                                <span class="text-xs font-bold text-rose-400 block uppercase">Greater Than (OR / Outside)</span>
+                                <div class="p-2 bg-slate-900 rounded-lg text-xs font-mono text-rose-300 border border-slate-800">
+                                    |x| > a \rightarrow x < -a \text{ OR } x > a
+                                </div>
+                                <p class="text-xs text-slate-300">
+                                    Example: $|x| > 5 \rightarrow x < -5 \text{ OR } x > 5$<br>
+                                    <strong>Interval:</strong> $(-\infty, -5) \cup (5, \infty)$
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 6,
+                title: "7. Measures of Position",
+                subtitle: "Quartiles, Deciles, Percentiles & Outlier Fences",
+                type: "Study Reviewer",
+                badge: "Statistics",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "Which percentile is equivalent to the Median and Second Quartile ($Q_2$)?",
+                        options: ["25th Percentile ($P_{25}$)", "50th Percentile ($P_{50}$)"],
+                        correct: 1,
+                        explanation: "$P_{50} = Q_2 = D_5 = \text{Median}$, representing the exact middle 50% mark of ordered data."
+                    },
+                    {
+                        question: "What is the formula for the Interquartile Range (IQR)?",
+                        options: ["IQR = Q3 - Q1", "IQR = Max - Min"],
+                        correct: 0,
+                        explanation: "The Interquartile Range measures the span of the middle 50% of data: $\text{IQR} = Q_3 - Q_1$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-4">
+                            <h3 class="font-display font-bold text-base text-cyan-300">Quartiles, Deciles, & Percentiles</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-cyan-400 block mb-1">Quartiles (Q)</strong>
+                                    <span>Divides data into 4 equal parts.<br>$\text{Pos} = \frac{k(n+1)}{4}$</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-indigo-400 block mb-1">Deciles (D)</strong>
+                                    <span>Divides data into 10 equal parts.<br>$\text{Pos} = \frac{k(n+1)}{10}$</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                    <strong class="text-emerald-400 block mb-1">Percentiles (P)</strong>
+                                    <span>Divides data into 100 equal parts.<br>$\text{Pos} = \frac{k(n+1)}{100}$</span>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs text-slate-300 font-mono text-center">
+                                P_{25} = Q_1 \quad | \quad P_{50} = Q_2 = D_5 = \text{Median} \quad | \quad P_{75} = Q_3 \quad | \quad D_1 = P_{10} \quad | \quad D_9 = P_{90}
+                            </div>
+                        </div>
+
+                        <!-- Outliers & Interpolation -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-2">
+                                <span class="font-bold text-amber-400 block uppercase">Linear Interpolation Formula</span>
+                                <p class="text-slate-300 font-mono">[(\text{Larger} - \text{Smaller}) \times \text{decimal}] + \text{Smaller}</p>
+                            </div>
+                            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-2">
+                                <span class="font-bold text-rose-400 block uppercase">IQR & Outlier Boundaries</span>
+                                <p class="text-slate-300 font-mono">
+                                    \text{IQR} = Q_3 - Q_1<br>
+                                    \text{Lower Fence} = Q_1 - (1.5 \times \text{IQR})<br>
+                                    \text{Upper Fence} = Q_3 + (1.5 \times \text{IQR})
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 7,
+                title: "8, 9 & 10. Data Visuals & Percentile Calculations",
+                subtitle: "Box Plots, Ogives & Percentile Interpretation",
+                type: "Study Reviewer",
+                badge: "Data & Analysis",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "What five numbers form the summary shown in a Box-and-Whisker Plot?",
+                        options: ["Min, Q1, Median (Q2), Q3, Max", "Min, D1, D5, D9, Max"],
+                        correct: 0,
+                        explanation: "A box plot displays the 5-number summary: Minimum, $Q_1$, Median ($Q_2$), $Q_3$, and Maximum."
+                    },
+                    {
+                        question: "If a student scores at the 85th percentile ($P_{85}$), what does this mean?",
+                        options: ["They got 85% of the test questions right", "They performed at or better than 85% of test takers"],
+                        correct: 1,
+                        explanation: "Percentile rank indicates position relative to others: an 85th percentile score means performing at or above 85% of the reference group."
+                    }
+                ],
+                html: `
+                    <div class="space-y-6">
+                        <div class="bg-slate-950 border border-cyan-500/40 rounded-2xl p-5 space-y-3">
+                            <h3 class="font-display font-bold text-base text-cyan-300">Statistical Visualizations</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+                                    <strong class="text-slate-100 font-bold block">Box-and-Whisker Plot</strong>
+                                    <p class="text-slate-300">Displays 5-number summary: <strong>Min, Q1, Median (Q2), Q3, Max</strong>. The box spans the middle 50% (IQR).</p>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
+                                    <strong class="text-slate-100 font-bold block">Cumulative Frequency & Ogive</strong>
+                                    <p class="text-slate-300">Running totals of frequencies plotted against upper class boundaries. The final total equals total sample size ($n$).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950 border border-indigo-500/40 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-sm text-indigo-300">Calculating Percentile Position (Ungrouped Data)</h4>
+                            <ol class="list-decimal list-inside space-y-1 text-xs text-slate-300">
+                                <li>Arrange data set in ascending order.</li>
+                                <li>Identify requested percentile rank $k$ and total observations $n$.</li>
+                                <li>Calculate position using: $P_k = \frac{k(n+1)}{100}$.</li>
+                            </ol>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 8,
+                title: "Group 2: Q&A - Solutions 1 to 5",
+                subtitle: "Step-by-Step Problem Solving Breakdown",
+                type: "Questions & Answers",
+                badge: "Q&A Part 1",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "In Q1, what is the value of side $a$ when $b=5$, $c=8$, and $A=60^\circ$?",
+                        options: ["a = 7", "a = 9"],
+                        correct: 0,
+                        explanation: "$a^2 = 5^2 + 8^2 - 2(5)(8)\cos(60^\circ) = 25 + 64 - 80(0.5) = 49 \rightarrow a = 7$."
+                    },
+                    {
+                        question: "In Q5, what are the solutions to $|2x - 3| = 7$?",
+                        options: ["{-2, 5}", "{-5, 2}"],
+                        correct: 0,
+                        explanation: "$2x - 3 = 7 \rightarrow x=5$ and $2x - 3 = -7 \rightarrow x=-2$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q1: Law of Cosines Problem</span>
+                            <p class="text-xs font-semibold text-slate-200">How do you solve for side 'a' in an oblique triangle when b = 5, c = 8, and angle A = 60°?</p>
+                            <div class="p-3 bg-slate-900 rounded-xl text-xs text-slate-300 font-mono border border-slate-800">
+                                a^2 = b^2 + c^2 - 2bc \cos A \\
+                                a^2 = (5)^2 + (8)^2 - 2(5)(8)\cos(60^\circ) \\
+                                a^2 = 25 + 64 - 80(0.5) = 89 - 40 = 49 \\
+                                a = \sqrt{49} = 7
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q2: Quadratic Inequality Notation</span>
+                            <p class="text-xs font-semibold text-slate-200">How is the solution to x² − 5x + 6 ≤ 0 written in interval notation?</p>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Factoring gives critical boundary points $x = 2$ and $x = 3$. Because the inequality symbol is "$\le$" (less than or equal to), endpoints are included. Solution: <strong>[2, 3]</strong>.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q3: Two-Variable Quadratic Graphing</span>
+                            <p class="text-xs font-semibold text-slate-200">Should the boundary for y > 2x² + x − 3 be solid or dashed, and where do you shade?</p>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Draw a <strong>dashed parabola</strong> (strict inequality $>$). Since $y >$ and $a = 2 > 0$ (opens upward), shade the region <strong>above/inside</strong> the parabola.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q4: Systems of Inequalities</span>
+                            <p class="text-xs font-semibold text-slate-200">How do you identify the solution set for a system of linear and quadratic inequalities on a graph?</p>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                The solution set is the <strong>overlapping shaded region</strong> where both inequality regions intersect.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q5: Absolute Value Equation</span>
+                            <p class="text-xs font-semibold text-slate-200">What are the solution steps and final set for |2x − 3| = 7?</p>
+                            <div class="p-3 bg-slate-900 rounded-xl text-xs text-slate-300 font-mono border border-slate-800">
+                                2x - 3 = 7 \rightarrow 2x = 10 \rightarrow x = 5 \\
+                                2x - 3 = -7 \rightarrow 2x = -4 \rightarrow x = -2 \\
+                                \text{Solution Set: } \{-2, 5\}
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 9,
+                title: "Group 2: Q&A - Solutions 6 to 10",
+                subtitle: "Step-by-Step Problem Solving Breakdown",
+                type: "Questions & Answers",
+                badge: "Q&A Part 2",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "In Q7, what is the interpolated value of Q1 for the dataset (n=10)?",
+                        options: ["Q1 = 11", "Q1 = 12"],
+                        correct: 0,
+                        explanation: "Position = $1(11)/4 = 2.75$. Interpolation: $[(12-8) \times 0.75] + 8 = 3 + 8 = 11$."
+                    },
+                    {
+                        question: "In Q9, what is the calculated position for P70 when n = 15?",
+                        options: ["11.2", "10.5"],
+                        correct: 0,
+                        explanation: "$P_{70} = \frac{70(15+1)}{100} = \frac{70(16)}{100} = 11.2$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q6: Absolute Value Inequality</span>
+                            <p class="text-xs font-semibold text-slate-200">How do you solve and write interval notation for |x − 2| > 4?</p>
+                            <div class="p-3 bg-slate-900 rounded-xl text-xs text-slate-300 font-mono border border-slate-800">
+                                x - 2 < -4 \text{ OR } x - 2 > 4 \\
+                                x < -2 \text{ OR } x > 6 \\
+                                \text{Interval: } (-\infty, -2) \cup (6, \infty)
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q7: Interpolation Calculation</span>
+                            <p class="text-xs font-semibold text-slate-200">Calculate Q1 for dataset: 5, 8, 12, 15, 18, 20, 24, 27, 30, 35 (n = 10).</p>
+                            <div class="p-3 bg-slate-900 rounded-xl text-xs text-slate-300 font-mono border border-slate-800">
+                                \text{Position} = \frac{1(10 + 1)}{4} = 2.75 \\
+                                2\text{nd value} = 8, \quad 3\text{rd value} = 12 \\
+                                Q_1 = [(12 - 8) \times 0.75] + 8 = [4 \times 0.75] + 8 = 11
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q8: Box Plot 5-Number Summary</span>
+                            <p class="text-xs font-semibold text-slate-200">What five statistical values are needed to construct a Box-and-Whisker Plot?</p>
+                            <p class="text-xs text-slate-300">
+                                Minimum, First Quartile ($Q_1$), Median ($Q_2$), Third Quartile ($Q_3$), and Maximum.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q9: Percentile Position Formula</span>
+                            <p class="text-xs font-semibold text-slate-200">For a 15-item dataset, what is the position result for the 70th percentile?</p>
+                            <div class="p-3 bg-slate-900 rounded-xl text-xs text-slate-300 font-mono border border-slate-800">
+                                P_{70} = \frac{70(15 + 1)}{100} = \frac{70(16)}{100} = \frac{1120}{100} = 11.2
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                            <span class="text-xs font-bold text-cyan-400 uppercase">Q10: Statistical Interpretation</span>
+                            <p class="text-xs font-semibold text-slate-200">What conclusion can be drawn if a student ranks at the 90th percentile on an exam?</p>
+                            <p class="text-xs text-slate-300">
+                                The student performed better than or equal to approximately 90% of all students who took the exam.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 10,
+                title: "Group 3: Real-Life Applications",
+                subtitle: "Practical Uses of Grade 10 Math Concepts",
+                type: "Applications",
+                badge: "Real-World Math",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "Which mathematical concept is used in quality control manufacturing to verify error tolerance limits?",
+                        options: ["Absolute Value Equations", "Law of Cosines"],
+                        correct: 0,
+                        explanation: "Absolute value equations express acceptable variations around a target value (e.g. $|x - 10| \le 0.05$)."
+                    },
+                    {
+                        question: "How do architects use two-variable quadratic inequalities?",
+                        options: ["Designing arch clearance zones for tunnels and bridges", "Calculating interest rates"],
+                        correct: 0,
+                        explanation: "Parabolic arches are modeled using quadratic inequalities to verify height clearance for vehicles."
+                    }
+                ],
+                html: `
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-300">
+                            Explore how Grade 10 Mathematics applies directly to real-world professions and everyday scenarios:
+                        </p>
+
+                        <div class="overflow-x-auto custom-scrollbar rounded-xl border border-slate-800">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-950 border-b border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
+                                        <th class="p-3">Topic</th>
+                                        <th class="p-3">Real-Life Application Example</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800/60 bg-slate-900/60 text-slate-300">
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">1. Law of Cosines</td>
+                                        <td class="p-3"><strong>Navigation & Surveying:</strong> Ships and aircraft calculate direct distance between points around obstacles.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">2. Quadratic Inequalities (1 Var)</td>
+                                        <td class="p-3"><strong>Business Profit Margin:</strong> Finding product price ranges that guarantee profit above zero ($\text{Profit} > 0$).</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">3. Quadratic Inequalities (2 Var)</td>
+                                        <td class="p-3"><strong>Architecture & Engineering:</strong> Designing tunnel/bridge clearance zones to ensure tall trucks fit safely under parabolic arches.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">4. Solution Regions</td>
+                                        <td class="p-3"><strong>Manufacturing Constraints:</strong> Finding optimal production volumes given material and machine time constraints.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">5. Absolute Value Equations</td>
+                                        <td class="p-3"><strong>Quality Control:</strong> Verifying machine part error limits (e.g., target $10\text{ cm} \pm 0.05\text{ cm}$).</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">6. Absolute Value Inequalities</td>
+                                        <td class="p-3"><strong>Thermostat Systems:</strong> Triggering HVAC adjustments when room temperature strays outside target bounds ($|T - 70| > 3$).</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">7. Measures of Position</td>
+                                        <td class="p-3"><strong>Pediatric Health Charts:</strong> Tracking child growth metrics to determine developmental percentile ranks.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">8. Box Plots & Ogives</td>
+                                        <td class="p-3"><strong>Real Estate Analysis:</strong> Evaluating neighborhood housing price distributions without skew from extreme luxury homes.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">9. Percentile Rank Calculation</td>
+                                        <td class="p-3"><strong>Standardized Testing:</strong> Admissions boards evaluating student ranks relative to national applicant pools.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/40">
+                                        <td class="p-3 font-bold text-slate-100">10. Statistical Conclusions</td>
+                                        <td class="p-3"><strong>Employee Wage Analysis:</strong> HR departments using deciles to ensure equitable wage distributions across job tiers.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 11,
+                title: "Module Review & Formula Cheat Sheet",
+                subtitle: "Quick Study Reference Card",
+                type: "Summary",
+                badge: "Cheat Sheet",
+                color: "cyan",
+                quickChecks: [
+                    {
+                        question: "What is the lower fence formula for identifying statistical outliers?",
+                        options: ["Q1 - 1.5(IQR)", "Q3 + 1.5(IQR)"],
+                        correct: 0,
+                        explanation: "Lower fence = $Q_1 - 1.5(\text{IQR})$; upper fence = $Q_3 + 1.5(\text{IQR})$."
+                    }
+                ],
+                html: `
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-300">
+                            Key formulas and rules summarized for quick review before taking the assessment:
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                                <span class="font-bold text-cyan-400 block uppercase">Law of Cosines</span>
+                                <p class="font-mono text-slate-200">a^2 = b^2 + c^2 - 2bc \cos A</p>
+                                <p class="text-slate-400">Use for SAS (find missing side) or SSS (find missing angle).</p>
+                            </div>
+
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                                <span class="font-bold text-amber-400 block uppercase">Absolute Value Rules</span>
+                                <p class="font-mono text-slate-200">|x| < a \rightarrow -a < x < a \quad \text{(AND)}</p>
+                                <p class="font-mono text-slate-200">|x| > a \rightarrow x < -a \text{ OR } x > a \quad \text{(OR)}</p>
+                            </div>
+
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                                <span class="font-bold text-emerald-400 block uppercase">Position Formulas</span>
+                                <p class="font-mono text-slate-200">Q_k = \frac{k(n+1)}{4}, \quad D_k = \frac{k(n+1)}{10}, \quad P_k = \frac{k(n+1)}{100}</p>
+                            </div>
+
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+                                <span class="font-bold text-rose-400 block uppercase">Outliers & Boundaries</span>
+                                <p class="font-mono text-slate-200">\text{IQR} = Q_3 - Q_1</p>
+                                <p class="font-mono text-slate-200">\text{Fences}: Q_1 - 1.5(\text{IQR}) \text{ and } Q_3 + 1.5(\text{IQR})</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                chapterNum: 12,
+                title: "Math Knowledge Challenge Quiz",
+                subtitle: "10 Interactive Test Questions",
+                type: "Assessment",
+                badge: "Interactive Quiz",
+                color: "cyan",
+                html: `
+                    <div class="space-y-6">
+                        <!-- Quiz Header Info Box -->
+                        <div class="bg-slate-950 border border-cyan-500/30 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl shrink-0 font-bold border border-cyan-500/30">
+                                    <i class="fa-solid fa-clipboard-question"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-display font-bold text-base text-cyan-300">Grade 10 Mathematics Mastery Test</h3>
+                                    <p class="text-xs text-slate-400">Answer all 10 questions to test your knowledge of Trigonometry, Algebra, and Statistics.</p>
+                                </div>
+                            </div>
+                            <div id="quiz-score-badge" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-center shrink-0">
+                                <span class="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Your Score</span>
+                                <span id="quiz-score-text" class="text-lg font-mono font-bold text-slate-300">0 / 10</span>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Container where questions render -->
+                        <div id="pisa-quiz-container" class="space-y-5">
+                            <!-- Questions Injected by JS -->
+                        </div>
+
+                        <!-- Quiz Action Controls -->
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl flex items-center justify-between gap-4">
+                            <button onclick="resetPisaQuiz()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition flex items-center gap-2">
+                                <i class="fa-solid fa-rotate-right"></i> Reset Answers
+                            </button>
+                            <button id="btn-submit-quiz" onclick="submitPisaQuiz()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-cyan-500/20 flex items-center gap-2">
+                                <i class="fa-solid fa-check-double"></i> Submit & Check Score
+                            </button>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        const mathQuizQuestions = [
+            {
+                id: 1,
+                question: "In an oblique triangle, $b = 5$, $c = 8$, and angle $A = 60^\circ$. What is the length of side $a$ using the Law of Cosines?",
+                options: ["A. 6", "B. 7", "C. 8", "D. 49"],
+                correct: 1,
+                explanation: "$a^2 = 5^2 + 8^2 - 2(5)(8)\cos(60^\circ) = 25 + 64 - 80(0.5) = 49 \rightarrow a = 7$."
+            },
+            {
+                id: 2,
+                question: "What is the solution to the quadratic inequality $x^2 - 5x + 6 \le 0$ in interval notation?",
+                options: ["A. (2, 3)", "B. [2, 3]", "C. (-\infty, 2] \cup [3, \infty)", "D. (-2, -3)"],
+                correct: 1,
+                explanation: "Factoring yields boundary values $x = 2$ and $x = 3$. Non-strict inequality $\le$ includes endpoints, giving [2, 3]."
+            },
+            {
+                id: 3,
+                question: "For the inequality $y > 2x^2 + x - 3$, what boundary line and shading should be used on a graph?",
+                options: [
+                    "A. Solid curve, shaded below",
+                    "B. Dashed curve, shaded above/inside the parabola",
+                    "C. Solid curve, shaded above",
+                    "D. Dashed curve, shaded outside"
+                ],
+                correct: 1,
+                explanation: "Strict inequality '>' requires a dashed line. For $y >$ with $a > 0$, shade above/inside the upward parabola."
+            },
+            {
+                id: 4,
+                question: "What is the solution set for the absolute value equation $|2x - 3| = 7$?",
+                options: ["A. {5, -2}", "B. {-5, 2}", "C. {5, 2}", "D. {-5, -2}"],
+                correct: 0,
+                explanation: "Solving $2x - 3 = 7 \rightarrow x = 5$ and $2x - 3 = -7 \rightarrow x = -2$. Solution set is {-2, 5}."
+            },
+            {
+                id: 5,
+                question: "What is the solution to $|x - 2| > 4$ expressed in interval notation?",
+                options: ["A. (-2, 6)", "B. [-2, 6]", "C. (-\infty, -2) \cup (6, \infty)", "D. (-\infty, -2] \cup [6, \infty)"],
+                correct: 2,
+                explanation: "'Greater than' yields OR: $x - 2 < -4 \rightarrow x < -2$ OR $x - 2 > 4 \rightarrow x > 6$. Interval: $(-\infty, -2) \cup (6, \infty)$."
+            },
+            {
+                id: 6,
+                question: "Given the dataset 5, 8, 12, 15, 18, 20, 24, 27, 30, 35 ($n = 10$), what is the interpolated value of the first quartile ($Q_1$)?",
+                options: ["A. 8", "B. 10", "C. 11", "D. 12"],
+                correct: 2,
+                explanation: "Position $= 1(11)/4 = 2.75$. Interpolation between 2nd value (8) and 3rd value (12): $[(12-8) \times 0.75] + 8 = 11$."
+            },
+            {
+                id: 7,
+                question: "What five values form the summary represented in a Box-and-Whisker Plot?",
+                options: [
+                    "A. Min, Q1, Median (Q2), Q3, Max",
+                    "B. Min, Mean, Median, Mode, Max",
+                    "C. D1, Q1, Q2, Q3, D9",
+                    "D. Min, Lower Fence, Median, Upper Fence, Max"
+                ],
+                correct: 0,
+                explanation: "A Box Plot summarizes the distribution using: Minimum, First Quartile ($Q_1$), Median ($Q_2$), Third Quartile ($Q_3$), and Maximum."
+            },
+            {
+                id: 8,
+                question: "For a dataset with $n = 15$ items, what is the calculated position for the 70th percentile ($P_{70}$)?",
+                options: ["A. 10.5", "B. 11.2", "C. 12.0", "D. 11.5"],
+                correct: 1,
+                explanation: "Position $P_{70} = \frac{70(15+1)}{100} = \frac{70(16)}{100} = 11.2$."
+            },
+            {
+                id: 9,
+                question: "If a student scores at the 90th percentile on a national entrance exam, what does this indicate?",
+                options: [
+                    "A. The student answered 90% of exam questions correctly.",
+                    "B. The student performed at or better than 90% of exam takers.",
+                    "C. The student failed 10% of the exam.",
+                    "D. The student ranked 90th in total score."
+                ],
+                correct: 1,
+                explanation: "Percentile rank indicates relative standing: scoring at the 90th percentile means outperforming or matching 90% of takers."
+            },
+            {
+                id: 10,
+                question: "Which mathematical concept is used in quality control to check acceptable dimension variations (e.g., $10\text{ cm} \pm 0.05\text{ cm}$)?",
+                options: ["A. Law of Cosines", "B. Absolute Value Equations", "C. Percentile Rank", "D. Quadratic Inequalities"],
+                correct: 1,
+                explanation: "Absolute value equations model tolerance limits where distance from a target measurement cannot exceed a specific error threshold."
+            }
+        ];
+
+        let currentPageIndex = 0;
+        let userAnswers = new Array(mathQuizQuestions.length).fill(null);
+        let chapterCheckAnswers = {};
+        let isSubmitted = false;
+
+        function renderPage() {
+            const page = pagesData[currentPageIndex];
+            const contentDiv = document.getElementById("page-content");
+
+            let badgeColorClass = "bg-cyan-500/20 text-cyan-300 border-cyan-500/30";
+            
+            let quickChecksHtml = "";
+            if (page.quickChecks && page.quickChecks.length > 0) {
+                quickChecksHtml = buildQuickChecksHtml(page);
+            }
+
+            contentDiv.innerHTML = `
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${badgeColorClass}">
+                                ${page.badge}
+                            </span>
+                            <span class="text-xs text-slate-400 font-mono">Module ${page.chapterNum} of ${pagesData.length}</span>
+                        </div>
+                        <h2 class="font-display font-bold text-2xl text-slate-100">${page.title}</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">${page.subtitle}</p>
+                    </div>
+                </div>
+                ${page.html}
+                ${quickChecksHtml}
+            `;
+
+            const progressPercent = ((currentPageIndex + 1) / pagesData.length) * 100;
+            document.getElementById("reading-progress-bar").style.width = `${progressPercent}%`;
+            document.getElementById("page-counter-badge").textContent = `Page ${currentPageIndex + 1} / ${pagesData.length}`;
+
+            document.getElementById("btn-prev").disabled = currentPageIndex === 0;
+            
+            const btnNext = document.getElementById("btn-next");
+            if (currentPageIndex === pagesData.length - 1) {
+                btnNext.innerHTML = `Finish Reviewer <i class="fa-solid fa-check ml-1"></i>`;
+                btnNext.onclick = () => goToPage(0);
+            } else {
+                btnNext.innerHTML = `Next Module <i class="fa-solid fa-chevron-right ml-1"></i>`;
+                btnNext.onclick = () => changePage(1);
+            }
+
+            const dotsContainer = document.getElementById("page-dots-container");
+            dotsContainer.innerHTML = pagesData.map((_, idx) => `
+                <button onclick="goToPage(${idx})" class="w-2.5 h-2.5 rounded-full transition-all shrink-0 ${idx === currentPageIndex ? 'bg-cyan-400 w-6' : 'bg-slate-700 hover:bg-slate-500'}"></button>
+            `).join('');
+
+            if (page.chapterNum === 12) {
+                renderQuiz();
+            }
+
+            initKaTeX();
+            document.getElementById("book-page-wrapper").scrollTop = 0;
+        }
+
+        function buildQuickChecksHtml(page) {
+            const chNum = page.chapterNum;
+            const savedState = chapterCheckAnswers[chNum] || [null, null];
+
+            return `
+                <div class="mt-8 pt-6 border-t border-slate-800 space-y-4">
+                    <div class="flex items-center gap-2 text-amber-400 font-display font-bold text-sm">
+                        <div class="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center border border-amber-500/30">
+                            <i class="fa-solid fa-lightbulb text-xs"></i>
+                        </div>
+                        <span>Module Practice Check (${page.quickChecks.length} Questions)</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${page.quickChecks.map((qc, qIdx) => {
+                            const selected = savedState[qIdx];
+                            const isCorrect = selected === qc.correct;
+
+                            return `
+                                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+                                    <div class="space-y-2">
+                                        <span class="text-[10px] font-bold font-mono text-cyan-400 uppercase tracking-wider block">Check ${qIdx + 1}</span>
+                                        <h5 class="text-xs font-semibold text-slate-100 leading-snug">${qc.question}</h5>
+                                    </div>
+
+                                    <div class="space-y-2 pt-1">
+                                        ${qc.options.map((opt, optIdx) => {
+                                            let btnClass = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800";
+                                            if (selected !== null) {
+                                                if (optIdx === qc.correct) {
+                                                    btnClass = "bg-emerald-950/90 border-emerald-500 text-emerald-200 font-bold";
+                                                } else if (selected === optIdx) {
+                                                    btnClass = "bg-rose-950/90 border-rose-500 text-rose-200 line-through";
+                                                }
+                                            }
+
+                                            return `
+                                                <button onclick="selectQuickCheck(${chNum}, ${qIdx}, ${optIdx})" class="w-full text-left p-2.5 rounded-xl border text-xs transition flex items-center justify-between ${btnClass}">
+                                                    <span>${opt}</span>
+                                                    ${selected !== null && optIdx === qc.correct ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' : ''}
+                                                    ${selected !== null && selected === optIdx && selected !== qc.correct ? '<i class="fa-solid fa-circle-xmark text-rose-400"></i>' : ''}
+                                                </button>
+                                            `;
+                                        }).join('')}
+                                    </div>
+
+                                    ${selected !== null ? `
+                                        <div class="p-2.5 rounded-xl text-[11px] leading-relaxed ${isCorrect ? 'bg-emerald-950/40 border border-emerald-500/30 text-emerald-300' : 'bg-rose-950/40 border border-rose-500/30 text-rose-300'}">
+                                            <span class="font-bold flex items-center gap-1 mb-0.5">
+                                                <i class="fa-solid ${isCorrect ? 'fa-check' : 'fa-info-circle'}"></i> ${isCorrect ? 'Correct!' : 'Explanation:'}
+                                            </span>
+                                            ${qc.explanation}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectQuickCheck(chapterNum, qIndex, optIndex) {
+            if (!chapterCheckAnswers[chapterNum]) {
+                chapterCheckAnswers[chapterNum] = [null, null];
+            }
+            chapterCheckAnswers[chapterNum][qIndex] = optIndex;
+            renderPage();
+        }
+
+        function initKaTeX() {
+            if (window.renderMathInElement) {
+                try {
+                    window.renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: "$$", right: "$$", display: true},
+                            {left: "$", right: "$", display: false}
+                        ],
+                        throwOnError: false
+                    });
+                } catch(e) {
+                    console.log("KaTeX note:", e);
+                }
+            }
+        }
+
+        function changePage(delta) {
+            const targetIndex = currentPageIndex + delta;
+            if (targetIndex >= 0 && targetIndex < pagesData.length) {
+                currentPageIndex = targetIndex;
+                renderPage();
+            }
+        }
+
+        function goToPage(index) {
+            if (index >= 0 && index < pagesData.length) {
+                currentPageIndex = index;
+                renderPage();
+                const tocDrawer = document.getElementById("toc-drawer");
+                if (!tocDrawer.classList.contains("translate-x-full")) {
+                    toggleTOC();
+                }
+            }
+        }
+
+        function toggleTOC() {
+            const tocDrawer = document.getElementById("toc-drawer");
+            const backdrop = document.getElementById("toc-backdrop");
+            const isOpen = !tocDrawer.classList.contains("translate-x-full");
+
+            if (isOpen) {
+                tocDrawer.classList.add("translate-x-full");
+                backdrop.classList.add("hidden");
+            } else {
+                tocDrawer.classList.remove("translate-x-full");
+                backdrop.classList.remove("hidden");
+                populateTOCList();
+            }
+        }
+
+        function populateTOCList() {
+            const listContainer = document.getElementById("toc-list");
+            listContainer.innerHTML = pagesData.map((p, idx) => `
+                <button onclick="goToPage(${idx})" class="w-full text-left p-3 rounded-xl border transition flex items-center justify-between gap-3 ${idx === currentPageIndex ? 'bg-cyan-950/60 border-cyan-500/50 text-cyan-300' : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:bg-slate-800/60'}">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <span class="w-6 h-6 rounded-lg font-bold text-xs flex items-center justify-center shrink-0 bg-cyan-950 text-cyan-300">${p.chapterNum}</span>
+                        <div class="truncate">
+                            <span class="block text-xs font-bold truncate">${p.title}</span>
+                            <span class="block text-[10px] text-slate-400 truncate">${p.type}</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                </button>
+            `).join('');
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById("pisa-quiz-container");
+            if (!container) return;
+
+            container.innerHTML = mathQuizQuestions.map((q, qIndex) => {
+                const selected = userAnswers[qIndex];
+                const isCorrect = selected === q.correct;
+
+                return `
+                    <div class="p-4 sm:p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <h4 class="font-display font-bold text-xs sm:text-sm text-slate-100 leading-snug">
+                                <span class="text-cyan-400 font-mono mr-1">${q.id}.</span> ${q.question}
+                            </h4>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-2 pt-1">
+                            ${q.options.map((opt, oIndex) => {
+                                let btnStyle = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800";
+                                
+                                if (selected === oIndex) {
+                                    btnStyle = "bg-cyan-950/80 border-cyan-500 text-cyan-200 font-bold";
+                                }
+
+                                if (isSubmitted) {
+                                    if (oIndex === q.correct) {
+                                        btnStyle = "bg-emerald-950/80 border-emerald-500 text-emerald-200 font-bold";
+                                    } else if (selected === oIndex && selected !== q.correct) {
+                                        btnStyle = "bg-rose-950/80 border-rose-500 text-rose-200 line-through opacity-80";
+                                    }
+                                }
+
+                                return `
+                                    <button onclick="selectQuizOption(${qIndex}, ${oIndex})" ${isSubmitted ? 'disabled' : ''} class="w-full text-left p-3 rounded-xl border text-xs transition flex items-center justify-between ${btnStyle}">
+                                        <span>${opt}</span>
+                                        ${isSubmitted && oIndex === q.correct ? '<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>' : ''}
+                                        ${isSubmitted && selected === oIndex && selected !== q.correct ? '<i class="fa-solid fa-circle-xmark text-rose-400 text-sm"></i>' : ''}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+
+                        ${isSubmitted ? `
+                            <div class="p-3 rounded-xl ${isCorrect ? 'bg-emerald-950/40 border border-emerald-500/30 text-emerald-300' : 'bg-rose-950/40 border border-rose-500/30 text-rose-300'} text-xs space-y-1">
+                                <span class="font-bold block flex items-center gap-1.5">
+                                    <i class="fa-solid ${isCorrect ? 'fa-check' : 'fa-xmark'}"></i> ${isCorrect ? 'Correct Answer!' : 'Incorrect'}
+                                </span>
+                                <p class="text-[11px] text-slate-300 leading-relaxed">${q.explanation}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            updateScoreBadge();
+        }
+
+        function selectQuizOption(qIndex, oIndex) {
+            if (isSubmitted) return;
+            userAnswers[qIndex] = oIndex;
+            renderQuiz();
+            initKaTeX();
+        }
+
+        function submitPisaQuiz() {
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            if (answeredCount < mathQuizQuestions.length) {
+                if (!confirm(`You have answered ${answeredCount} of ${mathQuizQuestions.length} questions. Submit anyway?`)) {
+                    return;
+                }
+            }
+
+            isSubmitted = true;
+            renderQuiz();
+            initKaTeX();
+
+            const correctCount = userAnswers.filter((ans, idx) => ans === mathQuizQuestions[idx].correct).length;
+            alert(`Assessment Complete!\nYour Score: ${correctCount} / ${mathQuizQuestions.length} (${Math.round((correctCount / mathQuizQuestions.length) * 100)}%)`);
+        }
+
+        function resetPisaQuiz() {
+            userAnswers = new Array(mathQuizQuestions.length).fill(null);
+            isSubmitted = false;
+            renderQuiz();
+            initKaTeX();
+        }
+
+        function updateScoreBadge() {
+            const correctCount = userAnswers.filter((ans, idx) => ans === mathQuizQuestions[idx].correct).length;
+            const badgeText = document.getElementById("quiz-score-text");
+            if (badgeText) {
+                badgeText.textContent = `${correctCount} / ${mathQuizQuestions.length}`;
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft") changePage(-1);
+            if (e.key === "ArrowRight") changePage(1);
+        });
+
+        window.onload = function() {
+            renderPage();
+        };
+    </script>
+</body>
+</html>
