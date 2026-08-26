@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Mastery: Friction Reviewer & Quiz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full font-sans antialiased flex flex-col bg-slate-950 text-slate-100">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold text-xl">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-100 leading-tight">Physics Mastery</h1>
+                    <p class="text-xs text-slate-400">Friction Reviewer & Assessment</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="flex items-center gap-2 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60">
+                <button id="nav-study-btn" onclick="switchTab('study')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-sky-600 text-white shadow-sm">
+                    <i class="fa-solid fa-book-open mr-1.5"></i>Reviewer
+                </button>
+                <button id="nav-quiz-btn" onclick="switchTab('quiz')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all">
+                    <i class="fa-solid fa-circle-question mr-1.5"></i>Practice Quiz
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
+
+        <!-- SECTION 1: STUDY REVIEWER -->
+        <section id="tab-study" class="flex flex-col gap-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <span class="px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full text-xs font-bold">
+                        Core Concepts
+                    </span>
+                    <h2 class="text-2xl font-bold text-slate-100 mt-3">Understanding Friction</h2>
+                    <p class="text-slate-400 text-sm mt-1">Key information, formulas, and characteristics to remember before taking the quiz.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- Card 1: Definition & Causes -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-sky-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-magnet"></i> Definition & Causes
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            <strong>Friction</strong> is a contact force opposing or resisting motion between touching surfaces. It acts in the opposite direction of movement.
+                        </p>
+                        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                            <span class="font-bold text-slate-200">Key Factors Influencing Friction:</span>
+                            <ul class="list-disc pl-4 space-y-0.5 text-slate-400">
+                                <li><strong>Surface Type:</strong> Rougher surfaces create greater friction.</li>
+                                <li><strong>Pressure/Force:</strong> Greater normal force increases friction.</li>
+                                <li><strong>Lubricants:</strong> Oil or grease fills gaps to minimize friction.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Formula & Forces -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-amber-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-square-root-variable"></i> Friction Formula
+                        </h3>
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 text-center">
+                            <p class="text-xl font-extrabold text-amber-400 font-mono">F<sub>f</sub> = μ · F<sub>N</sub></p>
+                        </div>
+                        <ul class="space-y-1.5 text-xs text-slate-300">
+                            <li><strong class="text-amber-300">F<sub>f</sub>:</strong> Frictional force (Newtons)</li>
+                            <li><strong class="text-amber-300">μ (mu):</strong> Coefficient of friction (dimensionless ratio)</li>
+                            <li><strong class="text-amber-300">F<sub>N</sub>:</strong> Normal force pressing surfaces together</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 3: Types of Friction -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 md:col-span-2">
+                        <h3 class="font-bold text-emerald-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group"></i> The Four Types of Friction
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                <span class="font-bold text-emerald-300 block mb-1">1. Static Friction</span>
+                                <p class="text-slate-400">Prevents an object from starting to move from rest.</p>
+                                <span class="text-slate-500 block mt-1 italic">Ex: Heavy box resting on a floor.</span>
+                            </div>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                <span class="font-bold text-emerald-300 block mb-1">2. Sliding Friction</span>
+                                <p class="text-slate-400">Occurs when solid surfaces slide over each other.</p>
+                                <span class="text-slate-500 block mt-1 italic">Ex: Sliding a book across a desk.</span>
+                            </div>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                <span class="font-bold text-emerald-300 block mb-1">3. Rolling Friction</span>
+                                <p class="text-slate-400">Occurs when an object rolls across a surface.</p>
+                                <span class="text-slate-500 block mt-1 italic">Ex: Bicycle wheel rolling on pavement.</span>
+                            </div>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                <span class="font-bold text-emerald-300 block mb-1">4. Fluid Friction</span>
+                                <p class="text-slate-400">Resistance experienced moving through liquid or gas.</p>
+                                <span class="text-slate-500 block mt-1 italic">Ex: Air resistance on a falling object.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Helpful vs Harmful -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 md:col-span-2">
+                        <h3 class="font-bold text-indigo-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-scale-balanced"></i> Helpful vs. Harmful Effects
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                <span class="font-bold text-emerald-400 flex items-center gap-1.5 mb-1">
+                                    <i class="fa-solid fa-thumbs-up"></i> Helpful Aspects
+                                </span>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                                    <li>Allows shoes to grip ground without slipping.</li>
+                                    <li>Enables vehicle brakes to stop motion.</li>
+                                    <li>Allows pencil lead to mark paper when writing.</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+                                <span class="font-bold text-rose-400 flex items-center gap-1.5 mb-1">
+                                    <i class="fa-solid fa-thumbs-down"></i> Harmful Aspects
+                                </span>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                                    <li>Causes wear and tear on mechanical gears.</li>
+                                    <li>Generates unwanted heat, wasting useful energy.</li>
+                                    <li>Reduces machinery power efficiency.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button onclick="switchTab('quiz')" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-sky-900/30">
+                        Start Practice Quiz <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PRACTICE QUIZ -->
+        <section id="tab-quiz" class="hidden flex-col gap-6">
+            
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Score & Progress</p>
+                        <p id="score-text" class="text-2xl font-extrabold text-sky-400 mt-1">0 / 0 <span class="text-xs text-slate-400 font-normal">(0%)</span></p>
+                    </div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Current Streak</p>
+                        <p id="streak-badge" class="text-2xl font-extrabold text-amber-400 mt-1">🔥 0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Card -->
+            <div id="quiz-card-wrapper" class="relative">
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col gap-6">
+                    
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                        <span id="question-number-badge" class="px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full text-xs font-bold">
+                            Question 1 of 7
+                        </span>
+                    </div>
+
+                    <div>
+                        <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-100 leading-relaxed">
+                            Loading question...
+                        </h2>
+                    </div>
+
+                    <div id="options-container" class="grid grid-cols-1 gap-3">
+                        <!-- Dynamic options -->
+                    </div>
+
+                    <!-- Explanation Box -->
+                    <div id="explanation-box" class="hidden bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col gap-2">
+                        <div class="flex items-center gap-2 font-bold text-sm text-sky-400">
+                            <i class="fa-solid fa-circle-info"></i> Concept Explanation
+                        </div>
+                        <p id="explanation-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+                    </div>
+
+                    <!-- Footer Actions -->
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                        <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition-all disabled:opacity-40">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Prev
+                        </button>
+                        <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2">
+                            Next <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Results Modal -->
+            <div id="results-modal" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center flex flex-col items-center gap-6 shadow-2xl">
+                <div class="w-20 h-20 rounded-full bg-sky-500/10 border-2 border-sky-500 flex items-center justify-center text-sky-400 text-3xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-100">Assessment Complete!</h2>
+                    <p class="text-slate-400 text-sm mt-1">Review your results below.</p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 w-full max-w-lg my-2">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <p class="text-xs font-semibold text-slate-400">Final Score</p>
+                        <p id="final-score-val" class="text-2xl font-black text-sky-400 mt-1">0%</p>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <p class="text-xs font-semibold text-slate-400">Correct</p>
+                        <p id="final-correct-val" class="text-2xl font-black text-slate-100 mt-1">0 / 0</p>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <p class="text-xs font-semibold text-slate-400">Max Streak</p>
+                        <p id="final-streak-val" class="text-2xl font-black text-amber-400 mt-1">0 🔥</p>
+                    </div>
+                </div>
+
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-sm transition-all shadow-lg flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> Retake Quiz
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const QUESTIONS = [
+            {
+                question: "What is friction?",
+                options: [
+                    "A force that speeds up moving objects",
+                    "A force that opposes or resists motion between touching surfaces",
+                    "A pull force caused by gravity alone",
+                    "A magnetic force between smooth materials"
+                ],
+                correctIndex: 1,
+                explanation: "Friction is a contact force that acts in the direction opposite to the object's movement or attempted movement."
+            },
+            {
+                question: "Why do smooth-looking surfaces still experience friction?",
+                options: [
+                    "They have micro-level bumps and irregularities that interact",
+                    "They trap air molecules between them",
+                    "Gravity pulls them together sideways",
+                    "Static electricity builds up instantly on smooth items"
+                ],
+                correctIndex: 0,
+                explanation: "Even smooth surfaces possess tiny microscopic bumps and irregularities that catch on each other, producing resistance."
+            },
+            {
+                question: "Which type of friction prevents a heavy resting box from moving when pushed?",
+                options: [
+                    "Rolling friction",
+                    "Fluid friction",
+                    "Static friction",
+                    "Sliding friction"
+                ],
+                correctIndex: 2,
+                explanation: "Static friction acts on stationary objects to prevent them from starting to move."
+            },
+            {
+                question: "A bicycle wheel rolling along a street is an example of:",
+                options: [
+                    "Fluid friction",
+                    "Static friction",
+                    "Rolling friction",
+                    "Sliding friction"
+                ],
+                correctIndex: 2,
+                explanation: "Rolling friction takes place specifically when a rounded object rolls over a flat surface."
+            },
+            {
+                question: "What happens to the frictional force if two surfaces are pressed together with greater pressure?",
+                options: [
+                    "Friction stays the same",
+                    "Friction increases",
+                    "Friction drops to zero",
+                    "Friction transforms into fluid drag"
+                ],
+                correctIndex: 1,
+                explanation: "Increasing the normal force or pressure pressing the surfaces together directly increases friction."
+            },
+            {
+                question: "In the friction formula F_f = μ · F_N, what does the symbol μ (mu) represent?",
+                options: [
+                    "Frictional Force",
+                    "Normal Force",
+                    "Coefficient of Friction",
+                    "Mass of the Object"
+                ],
+                correctIndex: 2,
+                explanation: "The Greek letter μ represents the coefficient of friction, which depends on the texture of the contacting materials."
+            },
+            {
+                question: "Which of the following is considered a harmful effect of friction?",
+                options: [
+                    "Car brakes bringing a vehicle to a stop",
+                    "Shoes gripping the ground while walking",
+                    "Wear and tear on machinery gears over time",
+                    "A pencil lead writing on paper"
+                ],
+                correctIndex: 2,
+                explanation: "Mechanical wear and tear and wasted heat generation are undesirable or harmful consequences of friction."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let maxStreak = 0;
+        let userAnswers = {};
+
+        function switchTab(tab) {
+            ['study', 'quiz'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`nav-${t}-btn`).classList.remove('bg-sky-600', 'text-white');
+                document.getElementById(`nav-${t}-btn`).classList.add('text-slate-400');
+            });
+
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('flex');
+            document.getElementById(`nav-${tab}-btn`).classList.add('bg-sky-600', 'text-white');
+            document.getElementById(`nav-${tab}-btn`).classList.remove('text-slate-400');
+        }
+
+        function renderQuestion() {
+            const q = QUESTIONS[currentIndex];
+            
+            document.getElementById('question-number-badge').innerText = `Question ${currentIndex + 1} of ${QUESTIONS.length}`;
+            document.getElementById('question-text').innerText = q.question;
+            document.getElementById('explanation-box').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const hasAnswered = userAnswers.hasOwnProperty(currentIndex);
+            const selectedOpt = userAnswers[currentIndex];
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border transition-all flex items-start gap-3.5 group font-medium text-sm ";
+                
+                let letterBadgeClass = "w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 border ";
+
+                if (!hasAnswered) {
+                    btn.className += "bg-slate-950 border-slate-800 hover:border-sky-500/50 hover:bg-slate-900 text-slate-200";
+                    letterBadgeClass += "bg-slate-900 border-slate-700 text-slate-400 group-hover:border-sky-500/50 group-hover:text-sky-400";
+                } else {
+                    if (idx === q.correctIndex) {
+                        btn.className += "bg-emerald-950/40 border-emerald-500/60 text-emerald-200 font-semibold";
+                        letterBadgeClass += "bg-emerald-500 border-emerald-400 text-slate-950 font-black";
+                    } else if (idx === selectedOpt) {
+                        btn.className += "bg-rose-950/40 border-rose-500/60 text-rose-200";
+                        letterBadgeClass += "bg-rose-500 border-rose-400 text-white font-black";
+                    } else {
+                        btn.className += "bg-slate-950/50 border-slate-800/60 text-slate-500 opacity-60";
+                        letterBadgeClass += "bg-slate-900 border-slate-800 text-slate-600";
+                    }
+                }
+
+                const letters = ['A', 'B', 'C', 'D'];
+                btn.innerHTML = `
+                    <span class="${letterBadgeClass}">${letters[idx]}</span>
+                    <span class="leading-snug mt-0.5">${optText}</span>
+                `;
+
+                if (!hasAnswered) {
+                    btn.onclick = () => selectOption(idx);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            if (hasAnswered) {
+                document.getElementById('explanation-text').innerText = q.explanation;
+                document.getElementById('explanation-box').classList.remove('hidden');
+            }
+
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            if (currentIndex === QUESTIONS.length - 1) {
+                document.getElementById('next-btn').innerHTML = `Finish Quiz <i class="fa-solid fa-flag-checkered"></i>`;
+            } else {
+                document.getElementById('next-btn').innerHTML = `Next <i class="fa-solid fa-arrow-right"></i>`;
+            }
+
+            updateScoreDisplay();
+        }
+
+        function selectOption(index) {
+            if (userAnswers.hasOwnProperty(currentIndex)) return;
+
+            userAnswers[currentIndex] = index;
+            const q = QUESTIONS[currentIndex];
+
+            if (index === q.correctIndex) {
+                score++;
+                streak++;
+                if (streak > maxStreak) maxStreak = streak;
+            } else {
+                streak = 0;
+            }
+
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentIndex < QUESTIONS.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            } else {
+                showResultsModal();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function updateScoreDisplay() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const pct = answeredCount > 0 ? Math.round((score / answeredCount) * 100) : 0;
+            document.getElementById('score-text').innerHTML = `${score} / ${answeredCount} <span class="text-xs text-slate-400 font-normal">(${pct}%)</span>`;
+            document.getElementById('streak-badge').innerHTML = `🔥 ${streak}`;
+        }
+
+        function showResultsModal() {
+            document.getElementById('quiz-card-wrapper').classList.add('hidden');
+            const modal = document.getElementById('results-modal');
+            modal.classList.remove('hidden');
+
+            const total = QUESTIONS.length;
+            const pct = Math.round((score / total) * 100);
+
+            document.getElementById('final-score-val').innerText = `${pct}%`;
+            document.getElementById('final-correct-val').innerText = `${score} / ${total}`;
+            document.getElementById('final-streak-val').innerText = `${maxStreak} 🔥`;
+        }
+
+        function restartQuiz() {
+            userAnswers = {};
+            score = 0;
+            streak = 0;
+            currentIndex = 0;
+            document.getElementById('results-modal').classList.add('hidden');
+            document.getElementById('quiz-card-wrapper').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderQuestion();
+        });
+    </script>
+</body>
+</html>
