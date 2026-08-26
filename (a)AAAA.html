@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 10 Mathematics Reviewer</title>
+    <style>
+        :root {
+            --bg-primary: #121826;
+            --bg-secondary: #1e293b;
+            --bg-accent: #0f172a;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --accent-orange: #fb923c;
+            --border-color: #334155;
+            --hover-bg: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent-blue);
+            border-bottom: 3px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* Collapsible Section Card */
+        .section {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .section:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .section-header {
+            padding: 18px 20px;
+            background-color: var(--bg-secondary);
+            color: var(--accent-blue);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .section-header:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            padding: 0 20px;
+            background-color: var(--bg-accent);
+        }
+
+        .section.active .section-content {
+            padding: 20px;
+            max-height: 3000px; /* High max-height to accommodate open text */
+            transition: max-height 0.5s ease-in, padding 0.3s ease;
+        }
+
+        .section.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        h3 {
+            color: var(--accent-green);
+            margin-top: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .formula-box {
+            background-color: #0c4a6e;
+            border-left: 4px solid var(--accent-blue);
+            color: #e0f2fe;
+            padding: 12px;
+            margin: 12px 0;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .remember-box {
+            background-color: #451a03;
+            border-left: 4px solid var(--accent-orange);
+            color: #ffedd5;
+            padding: 12px;
+            margin: 12px 0;
+            font-weight: bold;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Q&A Interactive Card Styling */
+        .qa-container {
+            margin-top: 25px;
+            background-color: var(--bg-secondary);
+            border: 1px dashed var(--accent-blue);
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .qa-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            margin-top: 10px;
+            padding: 12px;
+        }
+
+        .qa-question {
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .qa-answer {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #064e3b;
+            border-left: 3px solid var(--accent-green);
+            color: #a7f3d0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .btn-reveal {
+            background-color: var(--accent-blue);
+            color: var(--bg-primary);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .btn-reveal:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--bg-secondary);
+            color: var(--accent-blue);
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--bg-secondary);
+        }
+
+        .data-list {
+            letter-spacing: 2px;
+            font-weight: bold;
+            color: var(--accent-green);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background-color: var(--bg-secondary);
+            color: var(--accent-blue);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-blue);
+            color: var(--bg-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>GRADE 10 MATHEMATICS REVIEWER</h1>
+
+    <div class="controls">
+        <button class="btn" onclick="toggleAll(true)">Expand All</button>
+        <button class="btn" onclick="toggleAll(false)">Collapse All</button>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>1. Applying the Law of Cosines in Solving Oblique Triangles</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p><strong>What is an oblique triangle?</strong><br>
+            An oblique triangle is a triangle that does not have a 90° angle.</p>
+            <p>There are two types:</p>
+            <ul>
+                <li><strong>Acute triangle</strong> – all angles are less than 90°</li>
+                <li><strong>Obtuse triangle</strong> – one angle is greater than 90°</li>
+            </ul>
+            <p>The Law of Cosines is used to solve for missing sides or angles in oblique triangles.</p>
+
+            <h3>Law of Cosines Formula</h3>
+            <p>There are three forms:</p>
+            <div class="formula-box">
+                a² = b² + c² − 2bc cos A<br>
+                b² = a² + c² − 2ac cos B<br>
+                c² = a² + b² − 2ab cos C
+            </div>
+
+            <div class="remember-box">
+                REMEMBER! The lowercase letter and uppercase letter are opposite each other: A ↔ a | B ↔ b | C ↔ c
+            </div>
+
+            <h3>When to Use the Law of Cosines?</h3>
+            <ul>
+                <li><strong>SAS (Side-Angle-Side):</strong> Use this when you know two sides and the angle between them. It is usually used to find the missing side.</li>
+                <li><strong>SSS (Side-Side-Side):</strong> Use this when you know all three sides. It is usually used to find a missing angle.</li>
+            </ul>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: When should you use the Law of Cosines to solve for a missing angle?</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">Use it under the SSS (Side-Side-Side) condition—when all three sides of the oblique triangle are known.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>2. Solving Quadratic Inequalities in One Variable</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p><strong>What is a Quadratic Inequality?</strong><br>
+            A quadratic inequality is an inequality that contains a variable raised to the second power.</p>
+            <p><strong>Examples:</strong></p>
+            <ul>
+                <li>x² + 3x − 4 &gt; 0</li>
+                <li>x² − 5x + 6 ≤ 0</li>
+                <li>2x² + x − 3 ≥ 0</li>
+            </ul>
+            <p><strong>The symbols used are:</strong></p>
+            <ul>
+                <li><strong>&gt;</strong> = greater than</li>
+                <li><strong>&lt;</strong> = less than</li>
+                <li><strong>≥</strong> = greater than or equal to</li>
+                <li><strong>≤</strong> = less than or equal to</li>
+            </ul>
+
+            <h3>Interval Notation</h3>
+            <ul>
+                <li><strong>Parentheses ( ):</strong> The endpoint is NOT included. Used with &lt; or &gt;.<br><em>Example:</em> x &gt; 3 → (3, ∞)</li>
+                <li><strong>Brackets [ ]:</strong> The endpoint IS included. Used with ≤ or ≥.<br><em>Example:</em> x ≥ 3 → [3, ∞)</li>
+            </ul>
+            <div class="remember-box">
+                REMEMBER!<br>
+                &lt; or &gt; → NOT included<br>
+                ≤ or ≥ → INCLUDED
+            </div>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: What symbol format is used in interval notation for a non-strict inequality like ≤ or ≥?</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">Brackets [ ] are used because the endpoint is included in the solution set.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>3. Solving Quadratic Inequalities in Two Variables</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p>A quadratic inequality in two variables is an inequality that can be written in any of the following standard forms (where a ≠ 0):</p>
+            <div class="formula-box">
+                y &gt; ax² + bx + c<br>
+                y ≥ ax² + bx + c<br>
+                y &lt; ax² + bx + c<br>
+                y ≤ ax² + bx + c
+            </div>
+            <p>Unlike quadratic equations (which yield specific boundary points or curves), quadratic inequalities yield an infinite set of ordered pairs (x, y) representing a shaded region on the Cartesian plane.</p>
+
+            <h3>4-Step Procedure for Solving</h3>
+            <ol>
+                <li>
+                    <strong>Find Key Features of the Parabola:</strong> Vertex, orientation, and intercepts to graph the boundary parabola y = ax² + bx + c.
+                    <ul>
+                        <li><strong>Orientation:</strong> If a &gt; 0, the parabola opens upward. If a &lt; 0, it opens downward.</li>
+                        <li><strong>Vertex (h, k):</strong> Calculate the x-coordinate using h = -b / 2a, then plug h back into the equation to get k.</li>
+                        <li><strong>x-intercepts:</strong> Set y = 0 and solve for x using factoring or the quadratic formula.</li>
+                        <li><strong>y-intercept:</strong> Set x = 0, giving (0, c).</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Draw the Boundary Curve:</strong> Solid vs. Dashed
+                    <ul>
+                        <li>Use a <em>dashed parabola</em> for strict inequalities (&lt; or &gt;). Boundary points are not included.</li>
+                        <li>Use a <em>solid parabola</em> for non-strict inequalities (≤ or ≥). Boundary points are included.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Select a Test Point:</strong> Choose a point not lying on the parabola (origin (0,0) is usually easiest).
+                    <ul>
+                        <li><strong>If true:</strong> The region containing that test point is part of the solution set.</li>
+                        <li><strong>If false:</strong> The region containing that test point is not a solution.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Shade the Solution Region:</strong> Shade the region containing (0,0) if true, or the opposite if false.
+                    <ul>
+                        <li><em>Shortcut (when solved for y):</em> y &gt; or y ≥ shades above/inside an upward parabola. y &lt; or y ≤ shades below/outside an upward parabola.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: How do you know whether to graph a solid or dashed boundary parabola?</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">Use a dashed parabola for strict inequalities (&lt; or &gt;) and a solid parabola for non-strict inequalities (≤ or ≥).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>4. Determining the Region of Solutions (Linear vs. Quadratic)</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p>The region of solutions is the shaded area in the coordinate plane containing all ordered pairs (x, y) that satisfy an inequality (or system of inequalities).</p>
+            <p>Evaluate three core properties:</p>
+            <ul>
+                <li><strong>Boundary Type:</strong> Solid vs. Dashed line/curve.</li>
+                <li><strong>Half-Plane / Curve Region:</strong> Identifying whether solution lies above, below, inside, or outside.</li>
+                <li><strong>Overlapping Region (Systems):</strong> The intersection where shading overlaps.</li>
+            </ul>
+
+            <h3>Reference Rules</h3>
+            <p><strong>Boundary Types:</strong></p>
+            <ul>
+                <li>Strict (&lt; or &gt;): Dashed boundary. Points on boundary are not solutions.</li>
+                <li>Non-Strict (≤ or ≥): Solid boundary. Points on boundary are solutions.</li>
+            </ul>
+            <p><strong>Shading Directions (when solved for y):</strong></p>
+            <ul>
+                <li><strong>Linear Inequalities:</strong> Use y &gt; or y ≥ to shade above; y &lt; or y ≤ to shade below.</li>
+                <li><strong>Quadratic Inequalities:</strong> Use y &gt; or y ≥ to shade above/inside an upward parabola; y &lt; or y ≤ to shade below/outside an upward parabola.</li>
+            </ul>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: For a system of linear and quadratic inequalities, what constitutes the final solution region?</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">The intersection or overlapping region where the shaded regions of all inequalities in the system overlap simultaneously.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>5. Absolute Value Equations in One Variable</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p><strong>Absolute Value:</strong> The distance of a number from 0 on the number line.<br>
+            <strong>Absolute Value Equation:</strong> An equation containing an absolute value.</p>
+            
+            <div class="formula-box">
+                Rule: |x| = a → x = a OR x = -a
+            </div>
+            <p><strong>Example:</strong><br>
+            |x| = 5<br>
+            x = 5 OR x = -5<br>
+            Solution: {-5, 5}</p>
+
+            <p><strong>Various Notations:</strong></p>
+            <ul>
+                <li>Set notation: {-5, 5}</li>
+                <li>Number line: ● at -5 and 5</li>
+            </ul>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: Solve for x: |x| = 12. Write answer in set notation.</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">x = 12 OR x = -12. In set notation: {-12, 12}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>6. Absolute Value Inequalities in One Variable</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p><strong>Absolute Value Inequality:</strong> An inequality containing an absolute value.</p>
+
+            <h3>Less Than</h3>
+            <div class="formula-box">|x| &lt; a → -a &lt; x &lt; a</div>
+            <p><em>Example:</em> |x| &lt; 5 → -5 &lt; x &lt; 5 → Interval: (-5, 5)</p>
+
+            <h3>Greater Than</h3>
+            <div class="formula-box">|x| &gt; a → x &lt; -a OR x &gt; a</div>
+            <p><em>Example:</em> |x| &gt; 5 → x &lt; -5 OR x &gt; 5 → Interval: (-∞, -5) ∪ (5, ∞)</p>
+
+            <div class="remember-box">
+                REMEMBER:<br>
+                Less than = BETWEEN = AND<br>
+                Greater than = OUTSIDE = OR
+            </div>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: Express the inequality |x| &gt; 8 as a compound inequality statement.</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">x &lt; -8 OR x &gt; 8</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 7 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>7. Illustrate Measures of Position (Quartiles, Deciles, and Percentiles)</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p>Measures of position tell you where a value is located in an ordered data set. Always arrange the data from smallest to largest before finding a measure.</p>
+
+            <h3>Quartiles (Q)</h3>
+            <p>Divides data into 4 equal parts:</p>
+            <ul>
+                <li>Q₁ = 25% of data are below it</li>
+                <li>Q₂ = 50% of data are below it (Median)</li>
+                <li>Q₃ = 75% of data are below it</li>
+            </ul>
+            <p><strong>Position Formula (Ungrouped):</strong> Position of Qₖ = k(n + 1) / 4</p>
+
+            <h3>Deciles (D)</h3>
+            <p>Divides data into 10 equal parts (D₁ to D₉). D₅ = Median.</p>
+            <p><strong>Position Formula:</strong> Position of Dₖ = k(n + 1) / 10</p>
+
+            <h3>Percentiles (P)</h3>
+            <p>Divides data into 100 equal parts (P₁ to P₉₉).</p>
+            <p><strong>Position Formula:</strong> Position of Pₖ = k(n + 1) / 100</p>
+            <p><strong>Equivalencies:</strong> P₂₅ = Q₁ | P₅₀ = Q₂ = D₅ = Median | P₇₅ = Q₃ | D₁ = P₁₀ | D₉ = P₉₀</p>
+
+            <h3>Decimal Positions & Interpolation</h3>
+            <p>If position is a decimal (e.g., 3.5), it means halfway between the 3rd and 4th values.</p>
+            <div class="formula-box">
+                Interpolation Formula: [(Larger − Smaller) × decimal] + Smaller
+            </div>
+            <p><em>Example:</em> Data: 5, 8, 12, 15, 18, 20, 24, 27, 30, 35. Find Q₁ (n=10).<br>
+            Position = 1(10+1)/4 = 2.75<br>
+            Smaller (2nd) = 8, Larger (3rd) = 12, Decimal = 0.75<br>
+            Q₁ = [(12 − 8)(0.75)] + 8 = [(4)(0.75)] + 8 = 3 + 8 = 11</p>
+
+            <h3>Interquartile Range (IQR) & Outliers</h3>
+            <p><strong>IQR Formula:</strong> IQR = Q₃ − Q₁</p>
+            <p><strong>Outlier 1.5 × IQR Rule:</strong></p>
+            <ul>
+                <li>Lower fence = Q₁ − (1.5 × IQR)</li>
+                <li>Upper fence = Q₃ + (1.5 × IQR)</li>
+                <li>Any value below lower fence or above upper fence = Outlier</li>
+            </ul>
+
+            <h3>How to Interpret Percentiles</h3>
+            <p>80th percentile means score is at or above ~80% of the data. <strong>80th percentile ≠ 80% score.</strong> It represents rank, not percentage of correct answers.</p>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: What decile position is equivalent to the Median and the 50th Percentile?</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">D₅ (5th Decile)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 8 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>8. Construct and Interpret Plots, Histograms, and Polygons</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <h3>I. Box-and-Whisker Plot</h3>
+            <p>Shows the <strong>Five-Number Summary</strong>: Minimum, Q₁, Median (Q₂), Q₃, Maximum</p>
+            <ul>
+                <li>Left whisker → Minimum to Q₁</li>
+                <li>Box → Q₁ to Q₃ (Middle 50% of data)</li>
+                <li>Line inside box → Median</li>
+                <li>Right whisker → Q₃ to Maximum</li>
+            </ul>
+
+            <h3>II. Cumulative Frequency</h3>
+            <p>The running total of frequencies. The last cumulative frequency = total frequency (n).</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Score</th>
+                        <th>Frequency</th>
+                        <th>Cumulative Frequency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>10</td><td>3</td><td>3</td></tr>
+                    <tr><td>20</td><td>5</td><td>8 (3+5)</td></tr>
+                    <tr><td>30</td><td>4</td><td>12 (8+4)</td></tr>
+                    <tr><td>40</td><td>6</td><td>18 (12+6)</td></tr>
+                </tbody>
+            </table>
+
+            <h3>III. Cumulative Frequency Histogram & Polygon</h3>
+            <ul>
+                <li><strong>Histogram:</strong> Visualizes how cumulative totals increase across classes/values (x-axis: values, y-axis: cumulative frequency).</li>
+                <li><strong>Polygon (Ogive):</strong> Created by plotting cumulative frequency points and connecting them with straight line segments.</li>
+            </ul>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: What percentage of the data does the central "box" in a box-and-whisker plot represent?</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">It represents the middle 50% of the data (from Q₁ to Q₃).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 9 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>9. Calculate the Percentile Rank from Ungrouped Data</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p>Tells relative position compared to other scores.</p>
+            <p><strong>Example:</strong> Find position for 70th percentile from 100-item quiz scores: 68, 50, 85, 60, 92, 45, 75, 82, 55, 90, 62, 80, 65, 88, 70</p>
+            <ol>
+                <li><strong>Arrange data in ascending order:</strong><br>
+                <span class="data-list">45, 50, 55, 60, 62, 65, 68, 70, 75, 80, 82, 85, 88, 90, 92</span></li>
+                <li><strong>Identify values:</strong> k = 70, n = 15</li>
+                <li><strong>Input into formula:</strong> Pₖ = k(n + 1) / 100</li>
+                <li><strong>Solve:</strong><br>
+                P₇₀ = 70(15 + 1) / 100<br>
+                P₇₀ = 70(16) / 100<br>
+                P₇₀ = 1120 / 100 = <strong>11.2</strong></li>
+            </ol>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: What is the mandatory first step before applying any measure of position formula?</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">Arrange the data in ascending order (smallest to largest).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 10 -->
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <span>10. Draw Conclusions Based on Statistical Data Using Measures of Position</span>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="section-content">
+            <p>When drawing conclusions, explain what the value means in relation to the dataset rather than just giving a numerical answer.</p>
+            
+            <h3>Examples of Drawing Conclusions</h3>
+            <ul>
+                <li><strong>Percentile (90th Percentile):</strong> The student performed better than approximately 90% of the scores in the dataset.</li>
+                <li><strong>Quartile (Q₃ - Third Quartile):</strong> Since Q₃ represents the 75th percentile, the score is higher than approximately 75% of the data.</li>
+                <li><strong>Decile (D₇ - Seventh Decile):</strong> Since D₇ represents the 70th percentile, the score is higher than approximately 70% of the data.</li>
+            </ul>
+
+            <!-- Practice Questions -->
+            <div class="qa-container">
+                <h3 style="margin-top:0;">Practice Questions</h3>
+                <div class="qa-card">
+                    <div class="qa-question">Q1: Does scoring at the 85th percentile mean a student scored 85% on an exam?</div>
+                    <button class="btn-reveal" onclick="toggleAnswer(this)">Show Answer</button>
+                    <div class="qa-answer">No. It means the student performed better than or equal to approximately 85% of the test-takers, not that they got 85% of answers correct.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('active');
+        }
+
+        function toggleAll(expand) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                if (expand) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+        }
+
+        function toggleAnswer(btn) {
+            const answer = btn.nextElementSibling;
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+                btn.textContent = "Show Answer";
+            } else {
+                answer.style.display = "block";
+                btn.textContent = "Hide Answer";
+            }
+        }
+    </script>
+
+</body>
+</html>
